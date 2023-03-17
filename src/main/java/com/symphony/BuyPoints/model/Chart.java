@@ -26,10 +26,6 @@ public class Chart extends BaseEntity {
             cascade = CascadeType.ALL, orphanRemoval = true)
     List<ChartPointsRatio> chartPointsRatio = new ArrayList<>();
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "chart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<DefaultStoreSportChart> wrappers = new ArrayList<>();
-
     @Column(name = "name", unique = true)
     private String name;
     @Column(name = "ending_point")

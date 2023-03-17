@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -25,13 +24,13 @@ public class ChartServiceImpl implements ChartService {
     public ChartDTO getChart(int id) {
         Chart chart = chartRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Chart with given id is not found"));
-        return dtoConverter.convertToDto(chart);
+        return dtoConverter.convertToChartDto(chart);
     }
 
     @Override
     public List<ChartDTO> getAllActiveCharts() {
         List<Chart> charts = chartRepository.findByStatusTrue();
-        return dtoConverter.convertToDto(charts);
+        return dtoConverter.convertToChartDto(charts);
     }
 
     @Override
@@ -41,7 +40,7 @@ public class ChartServiceImpl implements ChartService {
                     throw new ChartNameExistsException(chartDTO.getName());
                 });
 
-        Chart chart = dtoConverter.convertToEntity(chartDTO);
+        Chart chart = dtoConverter.convertToChartEntity(chartDTO);
         return chartRepository.save(chart);
     }
 
@@ -50,7 +49,7 @@ public class ChartServiceImpl implements ChartService {
         chartRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Chart with given id is not found"));
 
-        Chart updatedChart = dtoConverter.convertToEntity(chartDTO);
+        Chart updatedChart = dtoConverter.convertToChartEntity(chartDTO);
         updatedChart.setId(id);
 
         return chartRepository.save(updatedChart);

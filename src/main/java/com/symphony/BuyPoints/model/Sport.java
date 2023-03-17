@@ -17,12 +17,16 @@ public class Sport extends BaseEntity {
     @Column(name = "name", unique = true)
     private String name;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "chart", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Period> periods = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "sport_period",
+            joinColumns = @JoinColumn(name = "sport_id"),
+            inverseJoinColumns = @JoinColumn(name = "period_id"))
+    @OrderBy("id")
+    private List<Period> sportPeriods;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "sport", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<DefaultStoreSportChart> wrappers = new ArrayList<>();
+    private List<League> leagues = new ArrayList<>();
 
 }

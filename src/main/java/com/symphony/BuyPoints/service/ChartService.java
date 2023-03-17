@@ -13,7 +13,7 @@ public interface ChartService {
 
     Chart createChart(ChartDTO chartDTO);
 
-    public Chart updateChart(ChartDTO chartDTO, Integer id);
+    Chart updateChart(ChartDTO chartDTO, Integer id);
 
 
 }

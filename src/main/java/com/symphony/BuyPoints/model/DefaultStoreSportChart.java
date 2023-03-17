@@ -1,25 +1,34 @@
 package com.symphony.BuyPoints.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
+@Builder
 @NoArgsConstructor
-@Table(name = "store")
+@AllArgsConstructor
+@Table(name = "store_sport_chart")
 @Entity
 public class DefaultStoreSportChart extends BaseEntity {
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "chart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<Store> stores = new ArrayList<>();
+    @Column(name = "line_type_id")
+    private Integer lineTypeId;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "chart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<Sport> sports = new ArrayList<>();
+    @Column(name = "period_id")
+    private Integer periodId;
+
+    @Column(name = "store_id")
+    private Integer storeId;
+
+    @Column(name = "sport_id")
+    private Integer sportId;
+
+    @Column(name = "chart_id")
+    private Integer chartId;
 
 }

@@ -1,11 +1,7 @@
 package com.symphony.BuyPoints.util;
 
-import com.symphony.BuyPoints.dto.ChartDTO;
-import com.symphony.BuyPoints.dto.ChartItemDTO;
-import com.symphony.BuyPoints.dto.ChartPointsRatioDTO;
-import com.symphony.BuyPoints.model.Chart;
-import com.symphony.BuyPoints.model.ChartItem;
-import com.symphony.BuyPoints.model.ChartPointsRatio;
+import com.symphony.BuyPoints.dto.*;
+import com.symphony.BuyPoints.model.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -24,7 +20,7 @@ public class DtoConverter {
         return chartDTO;
     }*/
 
-    public ChartDTO convertToDto(Chart chart) {
+    public ChartDTO convertToChartDto(Chart chart) {
 
         ChartDTO chartDTO = new ChartDTO(convertItemsToDTOs(chart.getItems()),
                 convertPointsRatioToDTOs(chart.getChartPointsRatio()), chart.getName(), chart.getEndingPoint());
@@ -37,7 +33,6 @@ public class DtoConverter {
                     return new ChartItemDTO(chartItem.getNumber(), chartItem.getPrice());
                 })
                 .collect(Collectors.toList());
-
     }
 
     public List<ChartPointsRatioDTO> convertPointsRatioToDTOs(List<ChartPointsRatio> chartPointsRatios) {
@@ -46,20 +41,17 @@ public class DtoConverter {
                     return new ChartPointsRatioDTO(chartPointsRatio.getOnPoint(), chartPointsRatio.getOnRatio(), chartPointsRatio.getOffPoint(), chartPointsRatio.getOffRatio());
                 })
                 .collect(Collectors.toList());
-
     }
 
-    public List<ChartDTO> convertToDto(List<Chart> charts) {
+    public List<ChartDTO> convertToChartDto(List<Chart> charts) {
         return charts.stream()
-                .map(chart -> convertToDto(chart))
+                .map(chart -> convertToChartDto(chart))
                 .collect(Collectors.toList());
     }
 
-    public Chart convertToEntity(ChartDTO chartDto) {
+    public Chart convertToChartEntity(ChartDTO chartDto) {
 
         Chart chart = modelMapper.map(chartDto, Chart.class);
-
-        /*Chart chart = new Chart(chartDto.getName(), chartDto.getEndingPoint(), true, chartDto.getUser());*/
 
         if (chart.getChartPointsRatio() != null) {
             List<ChartPointsRatio> chartPointsRatios = chart.getChartPointsRatio().stream()
@@ -71,7 +63,6 @@ public class DtoConverter {
 
             chart.setChartPointsRatio(chartPointsRatios);
         }
-
         if (chart.getItems() != null) {
             List<ChartItem> items = chart.getItems().stream()
                     .map(item -> {
@@ -86,10 +77,69 @@ public class DtoConverter {
         return chart;
     }
 
-    public List<Chart> convertToEntity(List<ChartDTO> chartsDTO) {
+    /*public List<Chart> convertToChartEntity(List<ChartDTO> chartsDTO) {
         return chartsDTO.stream()
-                .map(chartDTO -> convertToEntity(chartDTO))
+                .map(chartDTO -> convertToChartEntity(chartDTO))
+                .collect(Collectors.toList());
+    }*/
+
+    public List<SportDTO> convertToSportDTO(List<Sport> sports) {
+        List<SportDTO> sportDTOs = null;
+        if (sports != null) {
+            sportDTOs = sports.stream()
+                    .map(sport -> convertToSportDTO(sport))
+                    .collect(Collectors.toList());
+        }
+        return sportDTOs;
+    }
+
+    public SportDTO convertToSportDTO(Sport sport) {
+        return new SportDTO(sport.getId(), sport.getName(),
+                convertToPeriodDto(sport.getSportPeriods()), convertToLeagueDto(sport.getLeagues()));
+    }
+
+    private List<LeagueDTO> convertToLeagueDto(List<League> leagues) {
+        return leagues.stream()
+                .map(league -> {
+                    LeagueDTO dto = modelMapper.map(league, LeagueDTO.class);
+                    dto.setCountryDTO(convertToCountryDto(league.getCountry()));
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
+    private CountryDTO convertToCountryDto(Country country) {
+        return modelMapper.map(country, CountryDTO.class);
+    }
+
+    private List<PeriodDTO> convertToPeriodDto(List<Period> sportPeriods) {
+        return sportPeriods.stream()
+                .map(period -> {
+                    return modelMapper.map(period, PeriodDTO.class);
+                })
+                .collect(Collectors.toList());
+
+    }
+
+   /* public List<String> getPeriodNames(List<Period> periods) {
+        return periods.stream()
+                .map(Period::getPeriodName)
+                .collect(Collectors.toList());
+    }*/
+
+    public DefaultStoreSportChart convertToMenagmentEntity(DefaultStoreSportChartDTO dDto) {
+        /*return modelMapper.map(dDto, DefaultStoreSportChart.class);*/
+        return DefaultStoreSportChart.builder()
+                .sportId(dDto.getSportId())
+                .chartId(dDto.getChartId())
+                .storeId(dDto.getStoreId())
+                .periodId(dDto.getPeriodId())
+                .lineTypeId(dDto.getLineTypeId())
+                .build();
+    }
+
+    public DefaultStoreSportChartDTO convertToMenagmentDTO(DefaultStoreSportChart d) {
+        DefaultStoreSportChartDTO dto = modelMapper.map(d, DefaultStoreSportChartDTO.class);
+        return dto;
+    }
 }

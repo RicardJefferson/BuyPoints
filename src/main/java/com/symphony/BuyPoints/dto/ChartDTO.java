@@ -11,6 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 public class ChartDTO {
 
+    private int id;
+
     List<ChartItemDTO> items;
 
     List<ChartPointsRatioDTO> chartPointsRatio;

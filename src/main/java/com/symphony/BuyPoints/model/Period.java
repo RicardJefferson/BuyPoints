@@ -1,9 +1,10 @@
 package com.symphony.BuyPoints.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor
 @Data
@@ -11,12 +12,13 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Period extends BaseEntity {
 
+    @ManyToMany(mappedBy = "sportPeriods")
+    List<Sport> sports;
+
     @Column(name = "period_name")
     private String periodName;
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "sport_id", nullable = false)
-    private Chart chart;
+   /* @OneToOne(mappedBy = "period")
+    private DefaultStoreSportChart wrapper;*/
 
 }

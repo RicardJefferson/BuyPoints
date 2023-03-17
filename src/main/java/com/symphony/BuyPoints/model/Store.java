@@ -17,8 +17,8 @@ public class Store extends BaseEntity {
     @Column(name = "store_name", unique = true)
     private String name;
 
-    @JsonManagedReference
+    /*@JsonManagedReference
     @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<DefaultStoreSportChart> wrappers = new ArrayList<>();
+    List<DefaultStoreSportChart> wrappers = new ArrayList<>();*/
 
 }
