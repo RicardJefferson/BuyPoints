@@ -1,9 +1,13 @@
 package com.symphony.BuyPoints.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -22,5 +26,13 @@ public class League extends BaseEntity{
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country country;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "league", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<LeagueMatch> leagueMatches = new ArrayList<>();
+
+    /*@JsonManagedReference
+    @OneToMany(mappedBy = "league", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Game> games = new ArrayList<>();*/
 
 }

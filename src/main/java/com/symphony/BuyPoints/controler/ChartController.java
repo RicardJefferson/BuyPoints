@@ -31,7 +31,7 @@ public class ChartController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity editChart(@RequestBody ChartDTO chartDTO, @PathVariable Integer id) {
+    public ResponseEntity editChart(@RequestBody ChartDTO chartDTO, @PathVariable(required = true) Integer id) {
 
         return ResponseEntity.ok(chartService.updateChart(chartDTO, id));
     }

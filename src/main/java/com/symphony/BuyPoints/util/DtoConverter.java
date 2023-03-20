@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,14 +16,9 @@ public class DtoConverter {
 
     private final ModelMapper modelMapper;
 
-   /* public ChartDTO convertToDto(Chart chart) {
-        ChartDTO chartDTO = modelMapper.map(chart, ChartDTO.class);
-        return chartDTO;
-    }*/
-
     public ChartDTO convertToChartDto(Chart chart) {
 
-        ChartDTO chartDTO = new ChartDTO(convertItemsToDTOs(chart.getItems()),
+        ChartDTO chartDTO = new ChartDTO(chart.getId(), convertItemsToDTOs(chart.getItems()),
                 convertPointsRatioToDTOs(chart.getChartPointsRatio()), chart.getName(), chart.getEndingPoint());
         return chartDTO;
     }
@@ -98,7 +94,7 @@ public class DtoConverter {
                 convertToPeriodDto(sport.getSportPeriods()), convertToLeagueDto(sport.getLeagues()));
     }
 
-    private List<LeagueDTO> convertToLeagueDto(List<League> leagues) {
+    public List<LeagueDTO> convertToLeagueDto(List<League> leagues) {
         return leagues.stream()
                 .map(league -> {
                     LeagueDTO dto = modelMapper.map(league, LeagueDTO.class);
@@ -108,11 +104,11 @@ public class DtoConverter {
                 .collect(Collectors.toList());
     }
 
-    private CountryDTO convertToCountryDto(Country country) {
+    public CountryDTO convertToCountryDto(Country country) {
         return modelMapper.map(country, CountryDTO.class);
     }
 
-    private List<PeriodDTO> convertToPeriodDto(List<Period> sportPeriods) {
+    public List<PeriodDTO> convertToPeriodDto(List<Period> sportPeriods) {
         return sportPeriods.stream()
                 .map(period -> {
                     return modelMapper.map(period, PeriodDTO.class);
@@ -128,13 +124,10 @@ public class DtoConverter {
     }*/
 
     public DefaultStoreSportChart convertToMenagmentEntity(DefaultStoreSportChartDTO dDto) {
-        /*return modelMapper.map(dDto, DefaultStoreSportChart.class);*/
         return DefaultStoreSportChart.builder()
                 .sportId(dDto.getSportId())
                 .chartId(dDto.getChartId())
                 .storeId(dDto.getStoreId())
-                .periodId(dDto.getPeriodId())
-                .lineTypeId(dDto.getLineTypeId())
                 .build();
     }
 
@@ -142,4 +135,56 @@ public class DtoConverter {
         DefaultStoreSportChartDTO dto = modelMapper.map(d, DefaultStoreSportChartDTO.class);
         return dto;
     }
+
+    public List<Game> convertToGameEntity(GamesDTO gamesDTO) {
+
+        if (gamesDTO.getGameDTOs() != null) {
+            return gamesDTO.getGameDTOs().stream()
+                    .map(gameDTO -> {
+                        return convertToGameEntity(gameDTO, gamesDTO);
+                    })
+                    .collect(Collectors.toList());
+        } else {
+            throw new InputMismatchException("");
+        }
+
+
+
+        /*League league = new League();
+        league.setId(gDto.getLeague());
+
+        Store store = new Store();
+        store.setId(gDto.getStoreId());
+
+        LineType lineType = new LineType();
+        lineType.setId(gDto.getLineTypeId());
+
+        Period period = new Period();
+        period.setId(gDto.getPeriodId());
+
+        Chart chart = new Chart();
+        chart.setId(gDto.getChartId());
+
+        return Game.builder()
+                .league(league)
+                .store(store)
+                .lineType(lineType)
+                .period(period)
+                .chart(chart)
+                .gameType(gDto.getGameType())
+                .build();*/
+    }
+
+    private Game convertToGameEntity(GameDTO gameDTO, GamesDTO gamesDTO) {
+
+        return Game.builder()
+                .gameType(gameDTO.getGameType())
+                .chartId(gameDTO.getChartId())
+                .storeId(gamesDTO.getStoreId())
+                .leagueId(gamesDTO.getLeagueId())
+                .periodId(gamesDTO.getPeriodId())
+                .lineTypeId(gamesDTO.getLineTypeId())
+                .build();
+    }
+
 }

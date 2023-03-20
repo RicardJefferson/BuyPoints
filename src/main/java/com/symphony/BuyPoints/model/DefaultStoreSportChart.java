@@ -15,13 +15,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "store_sport_chart")
 @Entity
 public class DefaultStoreSportChart extends BaseEntity {
-
-    @Column(name = "line_type_id")
-    private Integer lineTypeId;
-
-    @Column(name = "period_id")
-    private Integer periodId;
-
     @Column(name = "store_id")
     private Integer storeId;
 

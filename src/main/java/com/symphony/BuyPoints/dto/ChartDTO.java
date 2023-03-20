@@ -25,7 +25,8 @@ public class ChartDTO {
 
     private String user;
 
-    public ChartDTO(List<ChartItemDTO> items, List<ChartPointsRatioDTO> chartPointsRatio, String name, double endingPoint) {
+    public ChartDTO(int id, List<ChartItemDTO> items, List<ChartPointsRatioDTO> chartPointsRatio, String name, double endingPoint) {
+        this.id = id;
         this.items = items;
         this.chartPointsRatio = chartPointsRatio;
         this.name = name;

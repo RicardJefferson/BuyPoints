@@ -11,8 +11,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class DefaultStoreSportChartDTO {
 
-    private Integer lineTypeId;
-    private Integer periodId;
+    public DefaultStoreSportChartDTO(Integer storeId, Integer sportId, Integer chartId) {
+        this.storeId = storeId;
+        this.sportId = sportId;
+        this.chartId = chartId;
+    }
+
     private Integer storeId;
     private Integer sportId;
     private Integer chartId;

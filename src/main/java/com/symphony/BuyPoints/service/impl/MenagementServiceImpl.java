@@ -4,10 +4,12 @@ import com.symphony.BuyPoints.dto.ChartDTO;
 import com.symphony.BuyPoints.dto.DefaultStoreSportChartDTO;
 import com.symphony.BuyPoints.dto.SportDTO;
 import com.symphony.BuyPoints.model.DefaultStoreSportChart;
-import com.symphony.BuyPoints.model.Sport;
-import com.symphony.BuyPoints.repository.MenagmentRepository;
+import com.symphony.BuyPoints.model.Game;
+import com.symphony.BuyPoints.dto.GamesDTO;
+import com.symphony.BuyPoints.repository.GameRepository;
+import com.symphony.BuyPoints.repository.MenagementRepository;
 import com.symphony.BuyPoints.service.ChartService;
-import com.symphony.BuyPoints.service.MenagmentService;
+import com.symphony.BuyPoints.service.MenagementService;
 import com.symphony.BuyPoints.service.SportService;
 import com.symphony.BuyPoints.util.DtoConverter;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +20,11 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class MenagmentServiceImpl implements MenagmentService {
+public class MenagementServiceImpl implements MenagementService {
 
-    private final MenagmentRepository menagmentRepository;
+    private final MenagementRepository menagmentRepository;
+
+    private final GameRepository gameRepository;
     private final SportService sportService;
     private final ChartService chartService;
     private final DtoConverter dtoConverter;
@@ -36,10 +40,9 @@ public class MenagmentServiceImpl implements MenagmentService {
     }*/
 
     @Override
-    public DefaultStoreSportChartDTO getDefaultChart(Integer sportId, Integer storeId,
-                                                     Integer lineTypeId, Integer periodId) {
+    public DefaultStoreSportChartDTO getDefaultChart(Integer sportId, Integer storeId) {
         DefaultStoreSportChartDTO dto = null;
-        Optional<DefaultStoreSportChart> wrapperOptional = menagmentRepository.findBySportIdAndStoreIdAndLineTypeIdAndPeriodId(sportId, storeId, lineTypeId, periodId);
+        Optional<DefaultStoreSportChart> wrapperOptional = menagmentRepository.findBySportIdAndStoreId(sportId, storeId);
 
         if (wrapperOptional.isPresent()) {
             DefaultStoreSportChart wrapper = wrapperOptional.get();
@@ -53,7 +56,13 @@ public class MenagmentServiceImpl implements MenagmentService {
     }
 
     @Override
-    public DefaultStoreSportChart create(DefaultStoreSportChartDTO dto) {
+    public DefaultStoreSportChart createDefaultChart(DefaultStoreSportChartDTO dto) {
         return menagmentRepository.save(dtoConverter.convertToMenagmentEntity(dto));
+    }
+
+    @Override
+    public List<Game> createGameChart(GamesDTO gamesDTO) {
+        return (List<Game>) gameRepository.saveAll(
+                dtoConverter.convertToGameEntity(gamesDTO));
     }
 }
