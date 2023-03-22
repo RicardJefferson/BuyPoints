@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface LineTypeRepository extends CrudRepository<LineType, Integer> {
 
-    List<LineType> findAll();
+    List<LineType> findAllByOrderByIdAsc();
 
 }
