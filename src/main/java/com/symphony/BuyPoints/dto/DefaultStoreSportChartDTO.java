@@ -14,5 +14,7 @@ public class DefaultStoreSportChartDTO {
     private Integer storeId;
     private Integer sportId;
     private Integer chartId;
+    private String chartName;
+
 
 }

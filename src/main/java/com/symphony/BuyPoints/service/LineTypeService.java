@@ -9,5 +9,6 @@ import java.util.List;
 public interface LineTypeService {
 
     List<LineType> getAll();
+    
 
 }
