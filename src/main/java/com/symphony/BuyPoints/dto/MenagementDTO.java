@@ -10,12 +10,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class GamesDTO {
-    private Integer lineTypeId;
-    private Integer periodId;
+public class MenagementDTO {
+
     private Integer storeId;
     private Integer leagueId;
+    private String leagueName;
+    private Integer sportId;
+    private Integer defaultChart;
+    private String defaultChartName;
+    private Integer lineTypeId;
+    private Integer periodId;
+    private List<GameDTO> gameDTOs = new ArrayList<>();
 
-    List<GameDTO> gameDTOs = new ArrayList<>();
 
 }

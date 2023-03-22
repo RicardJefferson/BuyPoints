@@ -12,4 +12,6 @@ public interface SportService {
 
     SportDTO getSport(int id);
 
+    Sport getSportEntity(int id);
+
 }

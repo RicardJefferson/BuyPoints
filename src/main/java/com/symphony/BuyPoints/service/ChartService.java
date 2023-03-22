@@ -11,6 +11,8 @@ public interface ChartService {
 
     List<ChartDTO> getAllActiveCharts();
 
+   /* List<ChartDTO> getChartsBySport();*/
+
     Chart createChart(ChartDTO chartDTO);
 
     Chart updateChart(ChartDTO chartDTO, Integer id);

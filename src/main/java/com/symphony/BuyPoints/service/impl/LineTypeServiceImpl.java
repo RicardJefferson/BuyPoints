@@ -16,6 +16,6 @@ public class LineTypeServiceImpl implements LineTypeService {
 
     @Override
     public List<LineType> getAll() {
-        return lineTypeRepository.findAll();
+        return lineTypeRepository.findAllByOrderByIdAsc();
     }
 }

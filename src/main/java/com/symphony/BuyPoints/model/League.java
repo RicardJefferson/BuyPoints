@@ -13,26 +13,22 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "league")
 @Entity
-public class League extends BaseEntity{
+public class League extends BaseEntity {
 
+   /* @JsonManagedReference
+    @OneToMany(mappedBy = "league", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<Game> games = new ArrayList<>();*/
     @Column(name = "name", unique = true)
     private String name;
-
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sport_id", nullable = false)
     private Sport sport;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "country_id", referencedColumnName = "id")
     private Country country;
-
     @JsonManagedReference
     @OneToMany(mappedBy = "league", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<LeagueMatch> leagueMatches = new ArrayList<>();
-
-    /*@JsonManagedReference
-    @OneToMany(mappedBy = "league", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Game> games = new ArrayList<>();*/
 
 }

@@ -18,13 +18,14 @@ public class BuyingPointsApplication {
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
-    
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(final CorsRegistry registry) {
                 registry.addMapping("/**").allowedMethods("*").allowedHeaders("*");
+                 /*.allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")*/
             }
         };
     }

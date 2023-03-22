@@ -33,6 +33,13 @@ public class ChartServiceImpl implements ChartService {
         return dtoConverter.convertToChartDto(charts);
     }
 
+  /*  @Override
+    public List<ChartDTO> getChartsBySport() {
+        return null;
+        *//*List<Chart> charts = chartRepository.findAll();
+        return dtoConverter.convertToChartDto(charts);*//*
+    }*/
+
     @Override
     public Chart createChart(ChartDTO chartDTO) {
         chartRepository.findByName(chartDTO.getName())

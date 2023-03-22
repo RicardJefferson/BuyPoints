@@ -36,5 +36,9 @@ public class ChartController {
         return ResponseEntity.ok(chartService.updateChart(chartDTO, id));
     }
 
+    /*@GetMapping("/{sportId}")
+    public ResponseEntity<List<ChartDTO>> getChartsBySport(@PathVariable(value = "sportId", required = true) Integer sportId) {
+        return ResponseEntity.ok(chartService.getAllActiveCharts());
+    }*/
 
 }

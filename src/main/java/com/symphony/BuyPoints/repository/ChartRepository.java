@@ -18,5 +18,7 @@ public interface ChartRepository extends CrudRepository<Chart, Integer> {
 
     Chart save(Chart chart);
 
+   /* List<Chart> find(int sportId);*/
+
 
 }

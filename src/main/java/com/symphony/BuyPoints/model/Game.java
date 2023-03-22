@@ -1,70 +1,36 @@
 package com.symphony.BuyPoints.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@Entity(name = "game")
-/*@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "game_type",
-        discriminatorType = DiscriminatorType.INTEGER)*/
+@Table(name = "game")
+@Entity
 public class Game extends BaseEntity {
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "game_type")
     private GameType gameType;
 
-    @Column(name = "store_id")
-    private Integer storeId;
+    @Column(name = "chart_id")
+    private Integer chartId;
 
     @Column(name = "league_id")
     private Integer leagueId;
 
-    @Column(name = "chart_id")
-    private Integer chartId;
-
-    @Column(name = "period_id")
-    private Integer periodId;
-
-    @Column(name = "line_type_id")
-    private Integer lineTypeId;
-
-   /* @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "league_id", referencedColumnName = "id")
-    private League league;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "store_id", referencedColumnName = "id")
-    private Store store;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "line_type_id", referencedColumnName = "id")
-    private LineType lineType;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "period_id", referencedColumnName = "id")
-    private Period period;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "chart_id", referencedColumnName = "id")
-    private Chart chart;*/
-
-
-
-
-    /*@JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "league_id", nullable = false)
-    private League league;
+    @Column(name = "league_name")
+    private String leagueName;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "store_id", nullable = false)
-    private Store store;
-
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "league_id", nullable = false)
-    private League league;*/
-
+    @JoinColumn(name = "menagement_id", nullable = false)
+    private Menagement menagement;
 
 }

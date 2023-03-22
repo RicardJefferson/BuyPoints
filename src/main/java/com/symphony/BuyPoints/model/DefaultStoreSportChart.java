@@ -24,4 +24,7 @@ public class DefaultStoreSportChart extends BaseEntity {
     @Column(name = "chart_id")
     private Integer chartId;
 
+    @Column(name = "chart_name")
+    private String chartName;
+
 }

@@ -5,14 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DefaultStoreSportChartDTO {
+public class LeagueOutputDTO {
 
-    private Integer storeId;
-    private Integer sportId;
-    private Integer chartId;
-
+    private String name;
+    private Integer id;
+    private List<GameDTO> games;
 }
