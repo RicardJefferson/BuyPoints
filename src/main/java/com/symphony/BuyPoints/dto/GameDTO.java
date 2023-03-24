@@ -14,5 +14,6 @@ public class GameDTO {
 
     private GameType gameType;
     private Integer chartId;
+    private String chartName;
 
 }

@@ -18,15 +18,19 @@ public class Game extends BaseEntity {
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "game_type")
     private GameType gameType;
-
     @Column(name = "chart_id")
     private Integer chartId;
-
-    @Column(name = "league_id")
-    private Integer leagueId;
-
-    @Column(name = "league_name")
+    @Column(name = "chart_name")
+    private String chartName;
+ /*   @Column(name = "league_name")
     private String leagueName;
+    @Column(name = "league_id")
+    private Integer leagueId;*/
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "league_id", nullable = false)
+    private League league;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

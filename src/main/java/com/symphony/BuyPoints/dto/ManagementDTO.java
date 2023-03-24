@@ -14,7 +14,7 @@ public class ManagementDTO {
 
     private Integer storeId;
     private Integer leagueId;
-    private String leagueName;
+/*    private String leagueName;*/
     private Integer sportId;
     private Integer defaultChart;
     private String defaultChartName;

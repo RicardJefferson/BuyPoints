@@ -15,9 +15,9 @@ import java.util.List;
 @Entity
 public class League extends BaseEntity {
 
-   /* @JsonManagedReference
+    @JsonManagedReference
     @OneToMany(mappedBy = "league", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<Game> games = new ArrayList<>();*/
+    List<Game> games = new ArrayList<>();
     @Column(name = "name", unique = true)
     private String name;
     @JsonBackReference

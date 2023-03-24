@@ -13,7 +13,10 @@ import java.util.List;
 @Builder
 public class LeagueOutputDTO {
 
-    private String name;
     private Integer id;
+    private String leagueName;
+    /*private CountryDTO countryDTO;*/
+
+    private String countryName;
     private List<GameDTO> games;
 }

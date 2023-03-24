@@ -158,7 +158,7 @@ public class DtoConverter {
                 .defaultChart(convertToDefaultChartEntity(managementDTO))
                 .build();
 
-        m.setGames(convertToGameEntity(managementDTO.getGameDTOs(), m, managementDTO.getLeagueName()));
+        m.setGames(convertToGameEntity(managementDTO.getGameDTOs(), m));
         return m;
     }
 
@@ -172,27 +172,27 @@ public class DtoConverter {
                 .build();
     }
 
-    private List<Game> convertToGameEntity(List<GameDTO> gamesDTO, Management management, String leagueName) {
+    private List<Game> convertToGameEntity(List<GameDTO> gamesDTO, Management management) {
         if (gamesDTO != null) {
             return gamesDTO
                     .stream()
                     .map(gameDTO -> {
-                        return convertToGameEntity(gameDTO, management, leagueName);
+                        return convertToGameEntity(gameDTO, management);
                     })
                     .collect(Collectors.toList());
         }
         return null;
     }
 
-    private Game convertToGameEntity(GameDTO gameDTO, Management management, String leagueName) {
+    private Game convertToGameEntity(GameDTO gameDTO, Management management) {
         League league = new League();
         league.setId(management.getLeagueId());
         return Game.builder()
                 .gameType(gameDTO.getGameType())
                 .chartId(gameDTO.getChartId())
+                .chartName(gameDTO.getChartName())
                 .menagement(management)
-                .leagueId(management.getLeagueId())
-                .leagueName(leagueName)
+                .league(league)
                 .build();
     }
     public LeagueOutputDTO convertToLeagueOutputDto(List<Game> games) {
@@ -203,8 +203,9 @@ public class DtoConverter {
                     .collect(Collectors.toList());
 
             return LeagueOutputDTO.builder()
-                    .id(games.get(0).getLeagueId())
-                    .name(games.get(0).getLeagueName())
+                    .id(games.get(0).getLeague().getId())
+                    .leagueName(games.get(0).getLeague().getName())
+                    .countryName(games.get(0).getLeague().getCountry().getName())
                     .games(gameDTOList)
                     .build();
         }
@@ -215,13 +216,14 @@ public class DtoConverter {
         return GameDTO.builder()
                 .gameType(game.getGameType())
                 .chartId(game.getChartId())
+                .chartName(game.getChartName())
                 .build();
     }
 
     public LeagueOutputDTO convertToLeagueOutputDto(League league) {
         return LeagueOutputDTO.builder()
                 .id(league.getId())
-                .name(league.getName())
+                .leagueName(league.getName())
                 .build();
     }
 
