@@ -2,13 +2,13 @@ package com.symphony.BuyPoints.service.impl;
 
 import com.symphony.BuyPoints.dto.DefaultStoreSportChartDTO;
 import com.symphony.BuyPoints.dto.LeagueOutputDTO;
-import com.symphony.BuyPoints.dto.MenagementDTO;
-import com.symphony.BuyPoints.dto.MenagementOutputDTO;
+import com.symphony.BuyPoints.dto.ManagementDTO;
+import com.symphony.BuyPoints.dto.ManagementOutputDTO;
 import com.symphony.BuyPoints.model.*;
 import com.symphony.BuyPoints.repository.DefaultStoreSportChartRepository;
 import com.symphony.BuyPoints.repository.LeagueRepository;
-import com.symphony.BuyPoints.repository.MenagementRepository;
-import com.symphony.BuyPoints.service.MenagementService;
+import com.symphony.BuyPoints.repository.ManagementRepository;
+import com.symphony.BuyPoints.service.ManagementService;
 import com.symphony.BuyPoints.service.SportService;
 import com.symphony.BuyPoints.util.DtoConverter;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +20,10 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
-public class MenagementServiceImpl implements MenagementService {
+public class ManagementServiceImpl implements ManagementService {
 
     private final DefaultStoreSportChartRepository defaultChartRepository;
-    private final MenagementRepository menagementRepository;
+    private final ManagementRepository managementRepository;
     private final LeagueRepository leagueRepository;
     /*    private final GamesByLeagueRepository gamesByLeagueRepository;*/
     private final SportService sportService;
@@ -65,38 +65,40 @@ public class MenagementServiceImpl implements MenagementService {
     }*/
 
     @Override
-    public List<Menagement> createGameChart(List<MenagementDTO> menagementDTOs) {
-        return (List<Menagement>) menagementRepository.saveAll(dtoConverter.convertToMenagementEntity(menagementDTOs));
+    public List<Management> createGameChart(List<ManagementDTO> managementDTOS) {
+        return (List<Management>) managementRepository.saveAll(dtoConverter.convertToManagementEntity(managementDTOS));
     }
 
     @Override
-    public MenagementOutputDTO getMenagement(int sportId, int storeId,
+    public ManagementOutputDTO getManagement(int sportId, int storeId,
                                              int periodId, int lineTypeId) {
 
         List<LeagueOutputDTO> leagueOutputDTOList = new ArrayList<>();
-
+        DefaultStoreSportChartDTO defaultDTO = null;
         Sport sport = sportService.getSportEntity(sportId);
-
+        Optional<List<Management>> managementOptional = managementRepository.getLeagueGames(sportId, storeId, periodId, lineTypeId);
         //Optional<List<GamesByLeague>> gamesByLeague = gamesByLeagueRepository.getGamesByLeague(sportId, storeId, periodId, lineTypeId);
-        Optional<List<Menagement>> menagementOptional = menagementRepository.getLeagueGames(sportId, storeId, periodId, lineTypeId);
         //Optional<DefaultStoreSportChart> defaultChartOptional = defaultChartRepository.findBySportIdAndStoreId(sportId, storeId);
 
-        //leagues
+        //leagues with custom charts mapping
         List<Integer> leaguesWithGamesIDs = new ArrayList<>();
         DefaultStoreSportChart defaultStoreSportChart = null;
-        if (menagementOptional.isPresent()) {
-            List<Menagement> menagementList = menagementOptional.get();
-            for (Menagement menagement : menagementList) {
-                List<Game> games = menagement.getGames();
+        if (managementOptional.isPresent() && managementOptional.get().size() > 0) {
+            List<Management> managementList = managementOptional.get();
+            for (Management management : managementList) {
+                List<Game> games = management.getGames();
                 if (games != null && !games.isEmpty()) {
                     LeagueOutputDTO leagueOutputDTO = dtoConverter.convertToLeagueOutputDto(games);
                     leagueOutputDTOList.add(leagueOutputDTO);
                     leaguesWithGamesIDs.add(leagueOutputDTO.getId());
                 }
             }
-            defaultStoreSportChart = menagementList.get(0).getDefaultChart();
+            //default store-sport chart
+            defaultStoreSportChart = managementList.get(0).getDefaultChart();
+            defaultDTO = dtoConverter.convertToDefaultChartDTO(defaultStoreSportChart);
         }
-     /*   List<League> allLeaguesBySport = leagueRepository.findBySport_Id(sportId);*/
+        //all others league mapping
+        /*   List<League> allLeaguesBySport = leagueRepository.findBySport_Id(sportId);*/
         for (League league : sport.getLeagues()) {
             if (!leaguesWithGamesIDs.contains(league.getId())) {
                 LeagueOutputDTO leagueOutputDTO = dtoConverter.convertToLeagueOutputDto(league);
@@ -104,10 +106,7 @@ public class MenagementServiceImpl implements MenagementService {
             }
         }
 
-        //default store-sport chart
-        DefaultStoreSportChartDTO defaultDTO = dtoConverter.convertToDefaultChartDTO(defaultStoreSportChart);
-
-        return MenagementOutputDTO.builder()
+        return ManagementOutputDTO.builder()
                 .leagueOutputDTO(leagueOutputDTOList)
                 .defaultChart(defaultDTO)
                 .build();

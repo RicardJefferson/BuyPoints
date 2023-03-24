@@ -1,6 +1,9 @@
 package com.symphony.BuyPoints.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,8 +20,5 @@ public class Period extends BaseEntity {
 
     @Column(name = "period_name")
     private String periodName;
-
-   /* @OneToOne(mappedBy = "period")
-    private DefaultStoreSportChart wrapper;*/
 
 }

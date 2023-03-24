@@ -1,6 +1,5 @@
 package com.symphony.BuyPoints.dto;
 
-import com.symphony.BuyPoints.model.LineType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-public class MenagementOutputDTO {
+public class ManagementOutputDTO {
 
     private DefaultStoreSportChartDTO defaultChart;
 

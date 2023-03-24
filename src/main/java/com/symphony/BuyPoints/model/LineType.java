@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "line_type")
 @Entity
 public class LineType extends BaseEntity {
-    @Column(name = "value", unique = true)
+    @Column(name = "value")
     private String value;
 
 }

@@ -31,6 +31,6 @@ public class Game extends BaseEntity {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "menagement_id", nullable = false)
-    private Menagement menagement;
+    private Management menagement;
 
 }

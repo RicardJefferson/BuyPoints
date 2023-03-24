@@ -1,12 +1,10 @@
 package com.symphony.BuyPoints.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,9 +14,5 @@ public class Store extends BaseEntity {
 
     @Column(name = "store_name", unique = true)
     private String name;
-
-    /*@JsonManagedReference
-    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    List<DefaultStoreSportChart> wrappers = new ArrayList<>();*/
 
 }

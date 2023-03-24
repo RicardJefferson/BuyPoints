@@ -19,7 +19,7 @@ import java.util.List;
 /*@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "game_type",
         discriminatorType = DiscriminatorType.INTEGER)*/
-public class Menagement extends BaseEntity {
+public class Management extends BaseEntity {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "menagement", fetch = FetchType.LAZY,

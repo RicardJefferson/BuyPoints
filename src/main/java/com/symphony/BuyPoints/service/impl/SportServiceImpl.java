@@ -1,7 +1,6 @@
 package com.symphony.BuyPoints.service.impl;
 
 import com.symphony.BuyPoints.dto.SportDTO;
-import com.symphony.BuyPoints.model.Period;
 import com.symphony.BuyPoints.model.Sport;
 import com.symphony.BuyPoints.repository.SportRepository;
 import com.symphony.BuyPoints.service.SportService;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service

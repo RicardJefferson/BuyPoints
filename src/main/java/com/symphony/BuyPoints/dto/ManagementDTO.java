@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class MenagementDTO {
+public class ManagementDTO {
 
     private Integer storeId;
     private Integer leagueId;

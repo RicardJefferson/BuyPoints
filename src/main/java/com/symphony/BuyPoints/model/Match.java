@@ -5,13 +5,25 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
-@Table(name = "league_match")
+@Table(name = "sport_match")
 @Entity
-public class LeagueMatch extends BaseEntity {
+public class Match extends BaseEntity {
 
-    private String name;
+    @Column(name = "match_date")
+    private LocalDateTime matchDate;
+
+    @Column(name = "home_team")
+    private String homeTeam;
+
+    @Column(name = "away_team")
+    private String awayTeam;
+
+    @Column(name = "rotation_number")
+    private String rotationNumber;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

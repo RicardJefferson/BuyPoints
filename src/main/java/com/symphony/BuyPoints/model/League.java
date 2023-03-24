@@ -29,6 +29,6 @@ public class League extends BaseEntity {
     private Country country;
     @JsonManagedReference
     @OneToMany(mappedBy = "league", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<LeagueMatch> leagueMatches = new ArrayList<>();
+    private List<Match> matches = new ArrayList<>();
 
 }
