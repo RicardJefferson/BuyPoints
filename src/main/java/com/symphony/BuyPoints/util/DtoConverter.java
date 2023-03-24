@@ -195,6 +195,7 @@ public class DtoConverter {
                 .league(league)
                 .build();
     }
+
     public LeagueOutputDTO convertToLeagueOutputDto(List<Game> games) {
         if (games != null && !games.isEmpty()) {
 
@@ -209,7 +210,7 @@ public class DtoConverter {
                     .games(gameDTOList)
                     .build();
         }
-    return null;
+        return null;
     }
 
     private GameDTO convertToGameDTO(Game game) {
@@ -224,6 +225,7 @@ public class DtoConverter {
         return LeagueOutputDTO.builder()
                 .id(league.getId())
                 .leagueName(league.getName())
+                .countryName(league.getCountry().getName())
                 .build();
     }
 
