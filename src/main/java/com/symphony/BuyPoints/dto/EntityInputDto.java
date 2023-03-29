@@ -4,23 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ManagementDTO {
+public class EntityInputDto {
+
+    private DefaultStoreSportChartDTO defaultChartDTO;
 
     private Integer storeId;
-    private Integer leagueId;
-/*    private String leagueName;*/
+    private Integer entityId;
+    private Integer entityTypeId;
     private Integer sportId;
-    private Integer defaultChart;
-    private String defaultChartName;
     private Integer lineTypeId;
     private Integer periodId;
-    private List<GameDTO> gameDTOs = new ArrayList<>();
-
+    private List<EntityDTO> entityDTOs;
 
 }

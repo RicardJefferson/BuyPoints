@@ -25,8 +25,12 @@ public class Sport extends BaseEntity {
     @OrderBy("id")
     private List<Period> sportPeriods;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "sport", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<League> leagues = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "sport_market",
+            joinColumns = @JoinColumn(name = "sport_id"),
+            inverseJoinColumns = @JoinColumn(name = "market_id"))
+    @OrderBy("id")
+    private List<Market> markets;
 
 }

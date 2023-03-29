@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,31 +16,25 @@ public class DtoConverter {
     private final ModelMapper modelMapper;
 
     public ChartDTO convertToChartDto(Chart chart) {
-
-        ChartDTO chartDTO = new ChartDTO(chart.getId(), convertItemsToDTOs(chart.getItems()),
+        return new ChartDTO(chart.getId(), convertItemsToDTOs(chart.getItems()),
                 convertPointsRatioToDTOs(chart.getChartPointsRatio()), chart.getName(), chart.getEndingPoint());
-        return chartDTO;
     }
 
     public List<ChartItemDTO> convertItemsToDTOs(List<ChartItem> chartItems) {
         return chartItems.stream()
-                .map(chartItem -> {
-                    return new ChartItemDTO(chartItem.getNumber(), chartItem.getPrice());
-                })
+                .map(chartItem -> new ChartItemDTO(chartItem.getNumber(), chartItem.getPrice()))
                 .collect(Collectors.toList());
     }
 
     public List<ChartPointsRatioDTO> convertPointsRatioToDTOs(List<ChartPointsRatio> chartPointsRatios) {
         return chartPointsRatios.stream()
-                .map(chartPointsRatio -> {
-                    return new ChartPointsRatioDTO(chartPointsRatio.getOnPoint(), chartPointsRatio.getOnRatio(), chartPointsRatio.getOffPoint(), chartPointsRatio.getOffRatio());
-                })
+                .map(chartPointsRatio -> new ChartPointsRatioDTO(chartPointsRatio.getOnPoint(), chartPointsRatio.getOnRatio(), chartPointsRatio.getOffPoint(), chartPointsRatio.getOffRatio()))
                 .collect(Collectors.toList());
     }
 
     public List<ChartDTO> convertToChartDto(List<Chart> charts) {
         return charts.stream()
-                .map(chart -> convertToChartDto(chart))
+                .map(this::convertToChartDto)
                 .collect(Collectors.toList());
     }
 
@@ -51,20 +44,14 @@ public class DtoConverter {
 
         if (chart.getChartPointsRatio() != null) {
             List<ChartPointsRatio> chartPointsRatios = chart.getChartPointsRatio().stream()
-                    .map(chartPointsRatio -> {
-                        chartPointsRatio.setChart(chart);
-                        return chartPointsRatio;
-                    })
+                    .peek(chartPointsRatio -> chartPointsRatio.setChart(chart))
                     .collect(Collectors.toList());
 
             chart.setChartPointsRatio(chartPointsRatios);
         }
         if (chart.getItems() != null) {
             List<ChartItem> items = chart.getItems().stream()
-                    .map(item -> {
-                        item.setChart(chart);
-                        return item;
-                    })
+                    .peek(item -> item.setChart(chart))
                     .collect(Collectors.toList());
 
             chart.setItems(items);
@@ -77,159 +64,145 @@ public class DtoConverter {
         List<SportDTO> sportDTOs = null;
         if (sports != null) {
             sportDTOs = sports.stream()
-                    .map(sport -> convertToSportDTO(sport))
+                    .map(this::convertToSportDTO)
                     .collect(Collectors.toList());
         }
         return sportDTOs;
     }
 
     public SportDTO convertToSportDTO(Sport sport) {
-        return new SportDTO(sport.getId(), sport.getName(),
-                convertToPeriodDto(sport.getSportPeriods()), convertToLeagueDto(sport.getLeagues()));
+        return SportDTO.builder()
+                .id(sport.getId())
+                .name(sport.getName())
+                .sportPeriods(convertToPeriodDto(sport.getSportPeriods()))
+                .marketDTOs(convertToMarketDTO(sport.getMarkets()))
+                .build();
     }
 
-    public List<LeagueDTO> convertToLeagueDto(List<League> leagues) {
-        return leagues.stream()
-                .map(league -> {
-                    LeagueDTO dto = modelMapper.map(league, LeagueDTO.class);
-                    dto.setCountryDTO(convertToCountryDto(league.getCountry()));
-                    return dto;
-                })
+    private List<MarketDTO> convertToMarketDTO(List<Market> markets) {
+        return markets.stream()
+                .map(this::convertToMarketDTO)
                 .collect(Collectors.toList());
     }
 
-    public CountryDTO convertToCountryDto(Country country) {
-        return modelMapper.map(country, CountryDTO.class);
+    private MarketDTO convertToMarketDTO(Market market) {
+        return MarketDTO.builder()
+                .id(market.getId())
+                .displayName(market.getName())
+                .build();
     }
 
     public List<PeriodDTO> convertToPeriodDto(List<Period> sportPeriods) {
         return sportPeriods.stream()
-                .map(period -> {
-                    return modelMapper.map(period, PeriodDTO.class);
-                })
+                .map(period -> modelMapper.map(period, PeriodDTO.class))
                 .collect(Collectors.toList());
 
     }
-
-   /* public List<String> getPeriodNames(List<Period> periods) {
-        return periods.stream()
-                .map(Period::getPeriodName)
-                .collect(Collectors.toList());
-    }*/
-
-/*    public DefaultStoreSportChart convertToMenagmentEntity(DefaultStoreSportChartDTO dDto) {
-        return DefaultStoreSportChart.builder()
-                .sportId(dDto.getSportId())
-                .chartId(dDto.getChartId())
-                .storeId(dDto.getStoreId())
-                .build();
-    }*/
 
     public DefaultStoreSportChartDTO convertToDefaultChartDTO(DefaultStoreSportChart d) {
-        DefaultStoreSportChartDTO dto = modelMapper.map(d, DefaultStoreSportChartDTO.class);
-        return dto;
+        return modelMapper.map(d, DefaultStoreSportChartDTO.class);
     }
 
-    public List<Management> convertToManagementEntity(List<ManagementDTO> managementDTOS) {
-        if (managementDTOS != null && !managementDTOS.isEmpty()) {
-            return managementDTOS.stream()
-                    .map(managementDTO -> {
-                        if (managementDTO.getGameDTOs() != null) {
-                            return convertToManagementEntity(managementDTO);
-                        } else {
-                            throw new InputMismatchException("Bad input parameters");
-
-                        }
-                    }).collect(Collectors.toList());
-        }
-
-        return null;
-    }
-
-    private Management convertToManagementEntity(ManagementDTO managementDTO) {
-
-        Management m = Management.builder()
-                .storeId(managementDTO.getStoreId())
-                .leagueId(managementDTO.getLeagueId())
-                .sportId(managementDTO.getSportId())
-                .periodId(managementDTO.getPeriodId())
-                .lineTypeId(managementDTO.getLineTypeId())
-                /* .games(convertToGameEntity(menagementDTO))*/
-                .defaultChart(convertToDefaultChartEntity(managementDTO))
-                .build();
-
-        m.setGames(convertToGameEntity(managementDTO.getGameDTOs(), m));
-        return m;
-    }
-
-    private DefaultStoreSportChart convertToDefaultChartEntity(ManagementDTO managementDTO) {
+    public DefaultStoreSportChart convertToDefaultChartEntity(DefaultStoreSportChartDTO defaultDTO) {
         return DefaultStoreSportChart.builder()
-                .sportId(managementDTO.getSportId())
-                .storeId(managementDTO.getStoreId())
-                .sportId(managementDTO.getSportId())
-                .chartId(managementDTO.getDefaultChart())
-                .chartName(managementDTO.getDefaultChartName())
+                .storeId(defaultDTO.getStoreId())
+                .sportId(defaultDTO.getSportId())
+                .chartId(defaultDTO.getChartId())
+                .chartName(defaultDTO.getChartName())
                 .build();
     }
 
-    private List<Game> convertToGameEntity(List<GameDTO> gamesDTO, Management management) {
-        if (gamesDTO != null) {
-            return gamesDTO
-                    .stream()
-                    .map(gameDTO -> {
-                        return convertToGameEntity(gameDTO, management);
-                    })
-                    .collect(Collectors.toList());
-        }
-        return null;
+
+    public List<EntityChart> convertToEntity(EntityInputDto entityInputDTO) {
+        return entityInputDTO.getEntityDTOs().stream()
+                .map(dto -> convertToEntity(entityInputDTO, dto))
+                .collect(Collectors.toList());
     }
 
-    private Game convertToGameEntity(GameDTO gameDTO, Management management) {
-        League league = new League();
-        league.setId(management.getLeagueId());
-        return Game.builder()
-                .gameType(gameDTO.getGameType())
-                .chartId(gameDTO.getChartId())
-                .chartName(gameDTO.getChartName())
-                .menagement(management)
-                .league(league)
+    private EntityChart convertToEntity(EntityInputDto entityInputDTO, EntityDTO entityDTO) {
+
+        return EntityChart.builder()
+                .storeId(entityInputDTO.getStoreId())
+                .entityId(entityInputDTO.getEntityId())
+                .entityTypeId(entityInputDTO.getEntityTypeId())
+                .sportId(entityInputDTO.getSportId())
+                .periodId(entityInputDTO.getPeriodId())
+                .lineTypeId(entityInputDTO.getLineTypeId())
+                .marketId(entityDTO.getMarketId())
+                .marketName(entityDTO.getMarketName())
+                .chartId(entityDTO.getChartId())
+                .chartName(entityDTO.getChartName())
                 .build();
     }
 
-    public LeagueOutputDTO convertToLeagueOutputDto(List<Game> games) {
-        if (games != null && !games.isEmpty()) {
+   /* public MatchOutputDTO convertToEntityDTO(List<ManagementEntity> entities) {
 
-            List<GameDTO> gameDTOList = games.stream()
-                    .map(game -> convertToGameDTO(game))
-                    .collect(Collectors.toList());
+        List<MatchDTO> matchesDTOs = entities.stream()
+                .map(this::convertToMatchDTO)
+                .collect(Collectors.toList());
 
-            return LeagueOutputDTO.builder()
-                    .id(games.get(0).getLeague().getId())
-                    .leagueName(games.get(0).getLeague().getName())
-                    .countryName(games.get(0).getLeague().getCountry().getName())
-                    .games(gameDTOList)
-                    .build();
-        }
-        return null;
+        return MatchOutputDTO.builder()
+                .matchId(matches.get(0).getMatchId())
+                .entityId(matches.get(0).getEntityId())
+                .entityTypeId(matches.get(0).getEntityTypeId())
+                .storeId(matches.get(0).getStoreId())
+                .sportId(matches.get(0).getSportId())
+                .lineTypeId(matches.get(0).getLineTypeId())
+                .periodId(matches.get(0).getPeriodId())
+                .matchDTOList(matchesDTOs)
+                .build();
+
+
+    }*/
+
+    public Match convertToMatchEntity(MatchOutputDTO matchOutputDTO, MatchDTO matchDTO) {
+        return Match.builder()
+                .matchId(matchOutputDTO.getMatchId())
+                .storeId(matchOutputDTO.getStoreId())
+                .entityId(matchOutputDTO.getEntityId())
+                .entityTypeId(matchOutputDTO.getEntityTypeId())
+                .sportId(matchOutputDTO.getSportId())
+                .periodId(matchOutputDTO.getPeriodId())
+                .lineTypeId(matchOutputDTO.getLineTypeId())
+                .marketId(matchDTO.getMarketId())
+                .marketName(matchDTO.getMarketName())
+                .chartId(matchDTO.getChartId())
+                .chartName(matchDTO.getChartName())
+                .build();
+
     }
 
-    private GameDTO convertToGameDTO(Game game) {
-        return GameDTO.builder()
-                .gameType(game.getGameType())
-                .chartId(game.getChartId())
-                .chartName(game.getChartName())
+    public MatchDTO convertToMatchDTO(Match match) {
+        return MatchDTO.builder()
+                .marketId(match.getMarketId())
+                .marketName(match.getMarketName())
+                .chartId(match.getChartId())
+                .chartName(match.getChartName())
                 .build();
     }
 
-    public LeagueOutputDTO convertToLeagueOutputDto(League league) {
-        return LeagueOutputDTO.builder()
-                .id(league.getId())
-                .leagueName(league.getName())
-                .countryName(league.getCountry().getName())
-                .build();
+    public List<Match> convertToMatchEntity(MatchOutputDTO matchOutputDTO) {
+        return matchOutputDTO.getMatchDTOList().stream()
+                .map(matchDTO -> convertToMatchEntity(matchOutputDTO, matchDTO))
+                .collect(Collectors.toList());
     }
+    public MatchOutputDTO convertToMatchDTO(List<Match> matches) {
 
-    public List<MatchDTO> convertToMatchDTO(List<Match> match) {
-        return null;
+        List<MatchDTO> matchesDTOs = matches.stream()
+                .map(this::convertToMatchDTO)
+                .collect(Collectors.toList());
+
+        return MatchOutputDTO.builder()
+                .matchId(matches.get(0).getMatchId())
+                .entityId(matches.get(0).getEntityId())
+                .entityTypeId(matches.get(0).getEntityTypeId())
+                .storeId(matches.get(0).getStoreId())
+                .sportId(matches.get(0).getSportId())
+                .lineTypeId(matches.get(0).getLineTypeId())
+                .periodId(matches.get(0).getPeriodId())
+                .matchDTOList(matchesDTOs)
+                .build();
+
+
     }
 }

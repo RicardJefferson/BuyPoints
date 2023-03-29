@@ -1,22 +1,19 @@
 package com.symphony.BuyPoints.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Builder
 @Data
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-@Table(name = "match_chart")
+@NoArgsConstructor
+@Table(name = "entity_chart")
 @Entity
-public class Match extends BaseEntity {
-    @Column(name = "match_id")
-    private Integer matchId;
+public class EntityChart extends BaseEntity {
     @Column(name = "entity_id")
     private Integer entityId;
     @Column(name = "entity_type_id")

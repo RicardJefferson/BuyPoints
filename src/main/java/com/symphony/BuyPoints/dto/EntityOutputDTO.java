@@ -9,12 +9,10 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
-public class ManagementOutputDTO {
+@Data
+public class EntityOutputDTO {
 
-    private DefaultStoreSportChartDTO defaultChart;
-
-    private List<LeagueOutputDTO> leagueOutputDTO;
-
+    private DefaultStoreSportChartDTO defaultChartDTO;
+    private List<EntityChartDTO> entityDTOs;
 }

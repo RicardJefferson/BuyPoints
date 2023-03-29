@@ -1,6 +1,5 @@
 package com.symphony.BuyPoints.dto;
 
-import com.symphony.BuyPoints.model.GameType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GameDTO {
+public class EntityChartDTO {
 
-    private GameType gameType;
+    private Integer entityId;
+    private Integer entityTypeId;
+    private String displayName;
+    private String organizationName;
+    private Integer marketId;
+    private String marketName;
     private Integer chartId;
     private String chartName;
 
