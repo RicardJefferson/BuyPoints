@@ -202,7 +202,22 @@ public class DtoConverter {
                 .periodId(matches.get(0).getPeriodId())
                 .matchDTOList(matchesDTOs)
                 .build();
+    }
 
+    public List<EntityChartDTO> convertToChartEntityDTO(List<EntityChart> entityCharts) {
+        return entityCharts.stream()
+                .map(entityChart -> convertToChartEntityDTO(entityChart))
+                .collect(Collectors.toList());
+    }
 
+    private EntityChartDTO convertToChartEntityDTO(EntityChart entityChart) {
+        return EntityChartDTO.builder()
+                .entityId(entityChart.getEntityId())
+                .entityTypeId(entityChart.getEntityTypeId())
+                .marketId(entityChart.getMarketId())
+                .marketName(entityChart.getMarketName())
+                .chartId(entityChart.getChartId())
+                .chartName(entityChart.getChartName())
+                .build();
     }
 }

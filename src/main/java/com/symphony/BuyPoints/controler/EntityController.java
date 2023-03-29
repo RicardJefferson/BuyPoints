@@ -1,5 +1,6 @@
 package com.symphony.BuyPoints.controler;
 
+import com.symphony.BuyPoints.dto.ChartDTO;
 import com.symphony.BuyPoints.dto.EntityChartDTO;
 import com.symphony.BuyPoints.dto.EntityInputDto;
 import com.symphony.BuyPoints.dto.EntityOutputDTO;
@@ -26,5 +27,11 @@ public class EntityController {
     @PostMapping
     public ResponseEntity saveEntityChart(@RequestBody EntityInputDto entityInputDto) {
         return ResponseEntity.ok(entityService.createEntity(entityInputDto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity editEntity(@RequestBody EntityInputDto entityInputDto, @PathVariable(required = true) Integer id) {
+
+        return ResponseEntity.ok(entityService.updateEntity(entityInputDto, id));
     }
 }

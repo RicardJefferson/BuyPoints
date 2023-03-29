@@ -55,26 +55,40 @@ public class ManagementEntityServiceImpl implements ManagementEntityService {
     }
 
     @Override
-    public List<EntityChart> createEntity(EntityInputDto entityDTO) {
-        saveDefaultChart(entityDTO);
-        return (List<EntityChart>) entityChartRepository.saveAll(dtoConverter.convertToEntity(entityDTO));
+    public EntityOutputDTO createEntity(EntityInputDto entityDTO) {
+
+        DefaultStoreSportChart d = saveDefaultChart(entityDTO);
+        List<EntityChart> entityCharts =
+                (List<EntityChart>) entityChartRepository.saveAll(dtoConverter.convertToEntity(entityDTO));
+
+        return EntityOutputDTO.builder()
+                .defaultChartDTO(dtoConverter.convertToDefaultChartDTO(d))
+                .entityDTOs(dtoConverter.convertToChartEntityDTO(entityCharts))
+                .build();
     }
 
-    private void saveDefaultChart(EntityInputDto entityDTO) {
+    private DefaultStoreSportChart saveDefaultChart(EntityInputDto entityDTO) {
         if (entityDTO.getDefaultChartDTO() != null) {
             Optional<DefaultStoreSportChart> defaultChartOptional = checkIfDefaultChartExists(entityDTO.getDefaultChartDTO());
             if (defaultChartOptional.isPresent()) {
                 DefaultStoreSportChart d = defaultChartOptional.get();
                 d.setChartId(entityDTO.getDefaultChartDTO().getChartId());
                 d.setChartName(entityDTO.getDefaultChartDTO().getChartName());
-                defaultChartRepository.save(d);
+                return defaultChartRepository.save(d);
             } else {
-                defaultChartRepository.save(dtoConverter.convertToDefaultChartEntity(entityDTO.getDefaultChartDTO()));
+                return defaultChartRepository.save(dtoConverter.convertToDefaultChartEntity(entityDTO.getDefaultChartDTO()));
             }
         }
+        return null;
     }
 
     private Optional<DefaultStoreSportChart> checkIfDefaultChartExists(DefaultStoreSportChartDTO defaultChartDTO) {
         return defaultChartRepository.findBySportIdAndStoreId(defaultChartDTO.getSportId(), defaultChartDTO.getStoreId());
     }
+
+    @Override
+    public List<EntityChart> updateEntity(EntityInputDto entityInputDto, Integer id) {
+        return null;
+    }
+
 }

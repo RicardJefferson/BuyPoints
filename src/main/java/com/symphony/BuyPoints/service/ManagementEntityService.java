@@ -15,5 +15,7 @@ public interface ManagementEntityService {
     EntityOutputDTO getEntities(int sportId, int storeId,
                                 int periodId, int lineTypeId);
 
-    List<EntityChart> createEntity(EntityInputDto entityDTO);
+    EntityOutputDTO createEntity(EntityInputDto entityDTO);
+
+    List<EntityChart> updateEntity(EntityInputDto entityInputDto, Integer id);
 }
