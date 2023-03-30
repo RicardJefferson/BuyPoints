@@ -7,21 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Data
-public class MatchOutputDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class MatchTableDTO {
 
     private Integer id;
-    private Integer storeId;
     private Integer entityId;
     private Integer entityTypeId;
-    private Integer sportId;
-    private Integer lineTypeId;
-    private Integer periodId;
-    private Integer matchId;
-    private List<MatchDTO> matchDTOList;
-
+    private String displayName;
+    private String organizationName;
+    private List<MatchDTO> matchChartDTOs;
 
 }

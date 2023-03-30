@@ -7,12 +7,17 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class EntityOutputDTO {
 
-    private DefaultStoreSportChartDTO defaultChartDTO;
-    private List<EntityChartDTO> entityDTOs;
+    private Integer id;
+    private Integer entityId;
+    private Integer entityTypeId;
+    private String displayName;
+    private String organizationName;
+    private List<EntityChartDTO> entityChartDTOs;
+
 }

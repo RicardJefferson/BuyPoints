@@ -1,9 +1,6 @@
 package com.symphony.BuyPoints.service.impl;
 
-import com.symphony.BuyPoints.dto.DefaultStoreSportChartDTO;
-import com.symphony.BuyPoints.dto.EntityChartDTO;
-import com.symphony.BuyPoints.dto.EntityInputDto;
-import com.symphony.BuyPoints.dto.EntityOutputDTO;
+import com.symphony.BuyPoints.dto.*;
 import com.symphony.BuyPoints.model.DefaultStoreSportChart;
 import com.symphony.BuyPoints.model.EntityChart;
 import com.symphony.BuyPoints.model.ManagementEntity;
@@ -24,9 +21,7 @@ public class ManagementEntityServiceImpl implements ManagementEntityService {
 
     private final DtoConverter dtoConverter;
     private final ManagementEntityRepository entityRepository;
-
     private final EntityChartRepository entityChartRepository;
-
     private final DefaultStoreSportChartRepository defaultChartRepository;
 
     @Override
@@ -35,54 +30,57 @@ public class ManagementEntityServiceImpl implements ManagementEntityService {
     }
 
     @Override
-    public EntityOutputDTO getEntities(int sportId, int storeId,
-                                       int periodId, int lineTypeId) {
+    public TableOutputDTO getEntities(int sportId, int storeId,
+                                      int periodId, int lineTypeId) {
 
         DefaultStoreSportChartDTO d = null;
-        List<EntityChartDTO> entityChartDTOS =
-                entityRepository.getEntities(sportId, storeId, periodId, lineTypeId);
+        List<ManagementEntity> entities =
+                entityRepository.findBySport_Id(sportId);
+
+        List<EntityOutputDTO> entityOutputDTOS =
+                dtoConverter.convertToEntityDTO(entities, storeId, periodId, lineTypeId);
 
         Optional<DefaultStoreSportChart> defaultStoreSportChart =
                 defaultChartRepository.findBySportIdAndStoreId(sportId, storeId);
+
         if (defaultStoreSportChart.isPresent()) {
             d = dtoConverter.convertToDefaultChartDTO(defaultStoreSportChart.get());
         }
 
-        return EntityOutputDTO.builder()
+        return TableOutputDTO.builder()
                 .defaultChartDTO(d)
-                .entityDTOs(entityChartDTOS)
+                .entityOutputDTOs(entityOutputDTOS)
                 .build();
     }
 
     @Override
-    public EntityOutputDTO createEntity(EntityInputDto entityDTO) {
+    public TableOutputDTO createEntity(EntityInputDto entityDTO) {
 
-        DefaultStoreSportChart d = saveDefaultChart(entityDTO);
-        List<EntityChart> entityCharts =
-                (List<EntityChart>) entityChartRepository.saveAll(dtoConverter.convertToEntity(entityDTO));
+        saveDefaultChart(entityDTO);
 
-        return EntityOutputDTO.builder()
-                .defaultChartDTO(dtoConverter.convertToDefaultChartDTO(d))
-                .entityDTOs(dtoConverter.convertToChartEntityDTO(entityCharts))
-                .build();
+        entityChartRepository.saveAll(dtoConverter.convertToEntity(entityDTO));
+
+        return getEntities(entityDTO.getSportId(), entityDTO.getStoreId(),
+                entityDTO.getPeriodId(), entityDTO.getLineTypeId());
     }
 
-    private DefaultStoreSportChart saveDefaultChart(EntityInputDto entityDTO) {
+    private void saveDefaultChart(EntityInputDto entityDTO) {
         if (entityDTO.getDefaultChartDTO() != null) {
-            Optional<DefaultStoreSportChart> defaultChartOptional = checkIfDefaultChartExists(entityDTO.getDefaultChartDTO());
+            Optional<DefaultStoreSportChart> defaultChartOptional = findDefaultChart(entityDTO.getDefaultChartDTO());
             if (defaultChartOptional.isPresent()) {
-                DefaultStoreSportChart d = defaultChartOptional.get();
-                d.setChartId(entityDTO.getDefaultChartDTO().getChartId());
-                d.setChartName(entityDTO.getDefaultChartDTO().getChartName());
-                return defaultChartRepository.save(d);
+                DefaultStoreSportChart defaultChart = defaultChartOptional.get();
+                if (defaultChart.getChartId() != entityDTO.getDefaultChartDTO().getChartId()) {
+                    defaultChart.setChartId(entityDTO.getDefaultChartDTO().getChartId());
+                    defaultChart.setChartName(entityDTO.getDefaultChartDTO().getChartName());
+                    defaultChartRepository.save(defaultChart);
+                }
             } else {
-                return defaultChartRepository.save(dtoConverter.convertToDefaultChartEntity(entityDTO.getDefaultChartDTO()));
+                defaultChartRepository.save(dtoConverter.convertToDefaultChartEntity(entityDTO.getDefaultChartDTO()));
             }
         }
-        return null;
     }
 
-    private Optional<DefaultStoreSportChart> checkIfDefaultChartExists(DefaultStoreSportChartDTO defaultChartDTO) {
+    private Optional<DefaultStoreSportChart> findDefaultChart(DefaultStoreSportChartDTO defaultChartDTO) {
         return defaultChartRepository.findBySportIdAndStoreId(defaultChartDTO.getSportId(), defaultChartDTO.getStoreId());
     }
 

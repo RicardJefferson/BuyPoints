@@ -13,6 +13,7 @@ public class EntityInputDto {
 
     private DefaultStoreSportChartDTO defaultChartDTO;
 
+    private Integer id;
     private Integer storeId;
     private Integer entityId;
     private Integer entityTypeId;

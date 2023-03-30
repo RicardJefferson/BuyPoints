@@ -11,10 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EntityChartDTO {
 
-    private Integer entityId;
-    private Integer entityTypeId;
-    private String displayName;
-    private String organizationName;
     private Integer marketId;
     private String marketName;
     private Integer chartId;

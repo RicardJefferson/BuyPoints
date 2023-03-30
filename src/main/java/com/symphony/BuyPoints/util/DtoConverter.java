@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -120,12 +121,14 @@ public class DtoConverter {
     }
 
     private EntityChart convertToEntity(EntityInputDto entityInputDTO, EntityDTO entityDTO) {
-
+        ManagementEntity m = new ManagementEntity();
+        m.setId(entityInputDTO.getId());
         return EntityChart.builder()
-                .storeId(entityInputDTO.getStoreId())
+                .managementEntity(m)
                 .entityId(entityInputDTO.getEntityId())
                 .entityTypeId(entityInputDTO.getEntityTypeId())
                 .sportId(entityInputDTO.getSportId())
+                .storeId(entityInputDTO.getStoreId())
                 .periodId(entityInputDTO.getPeriodId())
                 .lineTypeId(entityInputDTO.getLineTypeId())
                 .marketId(entityDTO.getMarketId())
@@ -156,7 +159,10 @@ public class DtoConverter {
     }*/
 
     public Match convertToMatchEntity(MatchOutputDTO matchOutputDTO, MatchDTO matchDTO) {
+        ManagementEntity m = new ManagementEntity();
+        m.setId(matchOutputDTO.getId());
         return Match.builder()
+                .managementEntity(m)
                 .matchId(matchOutputDTO.getMatchId())
                 .storeId(matchOutputDTO.getStoreId())
                 .entityId(matchOutputDTO.getEntityId())
@@ -186,13 +192,15 @@ public class DtoConverter {
                 .map(matchDTO -> convertToMatchEntity(matchOutputDTO, matchDTO))
                 .collect(Collectors.toList());
     }
-    public MatchOutputDTO convertToMatchDTO(List<Match> matches) {
+
+    public List<MatchDTO> convertToMatchDTO(List<Match> matches) {
 
         List<MatchDTO> matchesDTOs = matches.stream()
                 .map(this::convertToMatchDTO)
                 .collect(Collectors.toList());
 
-        return MatchOutputDTO.builder()
+        return matchesDTOs;
+        /*MatchOutputDTO.builder()
                 .matchId(matches.get(0).getMatchId())
                 .entityId(matches.get(0).getEntityId())
                 .entityTypeId(matches.get(0).getEntityTypeId())
@@ -201,10 +209,10 @@ public class DtoConverter {
                 .lineTypeId(matches.get(0).getLineTypeId())
                 .periodId(matches.get(0).getPeriodId())
                 .matchDTOList(matchesDTOs)
-                .build();
+                .build();*/
     }
 
-    public List<EntityChartDTO> convertToChartEntityDTO(List<EntityChart> entityCharts) {
+    /*public List<EntityChartDTO> convertToChartEntityDTO(List<EntityChart> entityCharts) {
         return entityCharts.stream()
                 .map(entityChart -> convertToChartEntityDTO(entityChart))
                 .collect(Collectors.toList());
@@ -212,12 +220,46 @@ public class DtoConverter {
 
     private EntityChartDTO convertToChartEntityDTO(EntityChart entityChart) {
         return EntityChartDTO.builder()
-                .entityId(entityChart.getEntityId())
-                .entityTypeId(entityChart.getEntityTypeId())
                 .marketId(entityChart.getMarketId())
                 .marketName(entityChart.getMarketName())
                 .chartId(entityChart.getChartId())
                 .chartName(entityChart.getChartName())
                 .build();
+    }*/
+
+    public List<EntityOutputDTO> convertToEntityDTO(List<ManagementEntity> entities, int storeId,
+                                                    int periodId, int lineTypeId) {
+        List<EntityOutputDTO> entityOutputDTOS = new ArrayList<>();
+        for (ManagementEntity entity : entities) {
+
+            EntityOutputDTO response = EntityOutputDTO.builder()
+                    .id(entity.getId())
+                    .entityTypeId(entity.getEntityTypeId())
+                    .entityId(entity.getEntityId())
+                    .displayName(entity.getDisplayName())
+                    .organizationName(entity.getOrganizationName())
+                    .build();
+
+            if (entity.getEntityCharts() != null && !entity.getEntityCharts().isEmpty()) {
+                List<EntityChartDTO> entityChartDTOs = new ArrayList<>();
+                for (EntityChart ec : entity.getEntityCharts()) {
+                    if (ec.getStoreId() == storeId && ec.getPeriodId() == periodId && ec.getLineTypeId() == lineTypeId) {
+                        entityChartDTOs.add(EntityChartDTO.builder()
+                                .marketId(ec.getMarketId())
+                                .marketName(ec.getMarketName())
+                                .chartId(ec.getChartId())
+                                .chartName(ec.getChartName())
+                                .build());
+                    }
+                }
+                response.setEntityChartDTOs(entityChartDTOs);
+            }
+
+            entityOutputDTOS.add(response);
+
+        }
+        return entityOutputDTOS;
     }
+
+
 }

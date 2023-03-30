@@ -1,8 +1,7 @@
 package com.symphony.BuyPoints.service;
 
-import com.symphony.BuyPoints.dto.EntityChartDTO;
 import com.symphony.BuyPoints.dto.EntityInputDto;
-import com.symphony.BuyPoints.dto.EntityOutputDTO;
+import com.symphony.BuyPoints.dto.TableOutputDTO;
 import com.symphony.BuyPoints.model.EntityChart;
 import com.symphony.BuyPoints.model.ManagementEntity;
 
@@ -12,10 +11,10 @@ public interface ManagementEntityService {
 
     List<ManagementEntity> findBySportId(int sportId);
 
-    EntityOutputDTO getEntities(int sportId, int storeId,
-                                int periodId, int lineTypeId);
+    TableOutputDTO getEntities(int sportId, int storeId,
+                               int periodId, int lineTypeId);
 
-    EntityOutputDTO createEntity(EntityInputDto entityDTO);
+    TableOutputDTO createEntity(EntityInputDto entityDTO);
 
     List<EntityChart> updateEntity(EntityInputDto entityInputDto, Integer id);
 }

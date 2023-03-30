@@ -14,6 +14,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "entity_chart")
 @Entity
 public class EntityChart extends BaseEntity {
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "management_entity_id", nullable = false)
+    private ManagementEntity managementEntity;
     @Column(name = "entity_id")
     private Integer entityId;
     @Column(name = "entity_type_id")
