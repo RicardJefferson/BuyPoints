@@ -17,7 +17,7 @@ public class MatchTableDTO {
     private Integer id;
     private Integer entityId;
     private Integer entityTypeId;
-    @JsonProperty("League/Tournaments")
+    @JsonProperty("League/Tournament")
     private String displayName;
     @JsonProperty("Country/Source")
     private String organizationName;
