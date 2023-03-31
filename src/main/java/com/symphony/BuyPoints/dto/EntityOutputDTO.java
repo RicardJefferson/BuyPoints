@@ -17,9 +17,9 @@ public class EntityOutputDTO {
     private Integer id;
     private Integer entityId;
     private Integer entityTypeId;
-    @JsonProperty("Country/Source")
-    private String displayName;
     @JsonProperty("League/Tournaments")
+    private String displayName;
+    @JsonProperty("Country/Source")
     private String organizationName;
     private List<EntityChartDTO> entityChartDTOs;
 
