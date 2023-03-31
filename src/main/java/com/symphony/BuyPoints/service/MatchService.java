@@ -15,5 +15,5 @@ public interface MatchService {
     MatchTableDTO getMatch(int entityId, int match_id, int sportId,
                            int storeId, int lineTypeId, int periodId);
 
-    public List<Match> createMatch(MatchOutputDTO matchOutputDTO);
+    public MatchTableDTO createMatch(MatchOutputDTO matchOutputDTO);
 }

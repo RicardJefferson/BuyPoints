@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -121,10 +120,10 @@ public class DtoConverter {
     }
 
     private EntityChart convertToEntity(EntityInputDto entityInputDTO, EntityDTO entityDTO) {
-        ManagementEntity m = new ManagementEntity();
-        m.setId(entityInputDTO.getId());
+/*        ManagementEntity m = new ManagementEntity();
+        m.setId(entityInputDTO.getId());*/
         return EntityChart.builder()
-                .managementEntity(m)
+                /*.managementEntity(m)*/
                 .entityId(entityInputDTO.getEntityId())
                 .entityTypeId(entityInputDTO.getEntityTypeId())
                 .sportId(entityInputDTO.getSportId())
@@ -159,10 +158,8 @@ public class DtoConverter {
     }*/
 
     public Match convertToMatchEntity(MatchOutputDTO matchOutputDTO, MatchDTO matchDTO) {
-        ManagementEntity m = new ManagementEntity();
-        m.setId(matchOutputDTO.getId());
         return Match.builder()
-                .managementEntity(m)
+              /*  .managementEntity(m)*/
                 .matchId(matchOutputDTO.getMatchId())
                 .storeId(matchOutputDTO.getStoreId())
                 .entityId(matchOutputDTO.getEntityId())
@@ -227,7 +224,7 @@ public class DtoConverter {
                 .build();
     }*/
 
-    public List<EntityOutputDTO> convertToEntityDTO(List<ManagementEntity> entities, int storeId,
+    /*public List<EntityOutputDTO> convertToEntityDTO(List<ManagementEntity> entities, int storeId,
                                                     int periodId, int lineTypeId) {
         List<EntityOutputDTO> entityOutputDTOS = new ArrayList<>();
         for (ManagementEntity entity : entities) {
@@ -259,7 +256,7 @@ public class DtoConverter {
 
         }
         return entityOutputDTOS;
-    }
+    }*/
 
 
 }

@@ -18,13 +18,14 @@ public class ManagementEntity extends BaseEntity {
     private Integer entityId;
     @Column(name = "entity_type_id")
     private Integer entityTypeId;
-    @JsonManagedReference
+
+    /*@JsonManagedReference
     @ManyToMany(mappedBy = "managementEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<EntityChart> entityCharts;
 
     @JsonManagedReference
     @ManyToMany(mappedBy = "managementEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Match> matches;
+    private List<Match> matches;*/
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

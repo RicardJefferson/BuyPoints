@@ -10,7 +10,9 @@ import com.symphony.BuyPoints.repository.MatchRepository;
 import com.symphony.BuyPoints.service.MatchService;
 import com.symphony.BuyPoints.util.DtoConverter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +24,6 @@ public class MatchServiceImpl implements MatchService {
     private final MatchRepository matchRepository;
     private final ManagementEntityRepository entityRepository;
     private final DtoConverter dtoConverter;
-
-    /*@Override
-    public List<MatchDTO> getMatchesByRotatingNumber(int rotationNumber) {
-        return matchRepository.findByRotationNumber(rotationNumber)
-                .map(matches -> dtoConverter.convertToMatchDTO(matches))
-                .orElseThrow(() -> new NotFoundException("Match didn't found by rotation number" + rotationNumber));
-    }*/
-
     @Override
     public MatchTableDTO getMatch(int entityId, int matchId, int sportId, int storeId, int lineTypeId, int periodId) {
 
@@ -44,7 +38,6 @@ public class MatchServiceImpl implements MatchService {
 
         ManagementEntity m = entityRepository.findByEntityId(entityId);
 
-
         return MatchTableDTO.builder()
                 .id(m.getId())
                 .entityId(m.getEntityId())
@@ -53,12 +46,29 @@ public class MatchServiceImpl implements MatchService {
                 .organizationName(m.getOrganizationName())
                 .matchChartDTOs(matchDTOList)
                 .build();
-
-
     }
 
     @Override
-    public List<Match> createMatch(MatchOutputDTO matchOutputDTO) {
-        return (List<Match>) matchRepository.saveAll(dtoConverter.convertToMatchEntity(matchOutputDTO));
+    public MatchTableDTO createMatch(MatchOutputDTO matchOutputDTO) {
+
+        Optional<List<Match>> matchesOptional =
+                matchRepository.findByMatchIdAndSportIdAndStoreIdAndLineTypeIdAndPeriodId(
+                        matchOutputDTO.getMatchId(), matchOutputDTO.getSportId(),
+                        matchOutputDTO.getStoreId(), matchOutputDTO.getLineTypeId(), matchOutputDTO.getPeriodId());
+
+        if (matchesOptional.isPresent())
+            deleteExistingEntityCharts(matchesOptional.get());
+
+
+        matchRepository.saveAll(dtoConverter.convertToMatchEntity(matchOutputDTO));
+        return getMatch(matchOutputDTO.getEntityId(), matchOutputDTO.getMatchId(),
+                matchOutputDTO.getSportId(), matchOutputDTO.getLineTypeId(),
+                matchOutputDTO.getStoreId(), matchOutputDTO.getPeriodId());
+    }
+
+    @Modifying
+    @Transactional
+    public void deleteExistingEntityCharts(List<Match> matches) {
+        matchRepository.deleteAll(matches);
     }
 }

@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface ManagementEntityRepository extends CrudRepository<ManagementEntity, Integer> {
@@ -28,30 +27,8 @@ public interface ManagementEntityRepository extends CrudRepository<ManagementEnt
                                      @Param("periodId") Integer periodId,
                                      @Param("lineTypeId") Integer lineTypeId);
 
-    List<ManagementEntity> findBySportId(Integer sportId);
-
-
-
-    /*@Query("SELECT new com.symphony.BuyPoints.dto.EntityChartDTO(e.entityId,ec.entityTypeId, " +
-            "e.displayName, e.organizationName, ec.marketId, ec.marketName," +
-            "ec.chartId, ec.chartName, " +
-            "ec.storeId, ec.periodId, ec.lineTypeId ) " +
-            "FROM ManagementEntity e " +
-            "LEFT JOIN EntityChart ec on ec.entityId = e.entityId AND ec.entityTypeId = ec.entityTypeId" +
-            "AND e.sportId = ec.sportId" +
-            "WHERE e.sportId = :sportId ")
-    List<EntityChartDTO> getEntities(@Param("sportId") Integer sportId);*/
-
     List<ManagementEntity> findBySport_Id(int sportId);
 
     ManagementEntity findByEntityId(int entityId);
-
- /*   Query("SELECT l FROM League l " +
-                  "WHERE (:name is null or l.name like :name% ) " +
-                  "AND (:countryName is null or l.country.name like :countryName% ) " +
-                  "AND l.sport.id = :sportId ")
-    Optional<List<League>> search(@Param("name") String name,
-                                  @Param("countryName") String countryName,
-                                  @Param("sportId") Integer sportId);*/
 
 }

@@ -1,15 +1,11 @@
 package com.symphony.BuyPoints.controler;
 
-import com.symphony.BuyPoints.dto.EntityInputDto;
-import com.symphony.BuyPoints.dto.MatchDTO;
 import com.symphony.BuyPoints.dto.MatchOutputDTO;
 import com.symphony.BuyPoints.dto.MatchTableDTO;
 import com.symphony.BuyPoints.service.MatchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,7 +28,7 @@ public class MatchController {
     }
 
     @PostMapping
-    public ResponseEntity saveEntityChart(@RequestBody MatchOutputDTO matchOutputDTO) {
+    public ResponseEntity<MatchTableDTO> saveEntityChart(@RequestBody MatchOutputDTO matchOutputDTO) {
         return ResponseEntity.ok(matchService.createMatch(matchOutputDTO));
     }
 }

@@ -13,7 +13,4 @@ public class EntityDTO {
     private Integer chartId;
     private String chartName;
 
-   /* private List<MatchDTO> matchDTO;
-*/
-
 }

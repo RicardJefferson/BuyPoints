@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/entity")
@@ -21,13 +23,8 @@ public class EntityController {
     }
 
     @PostMapping
-    public ResponseEntity saveEntityChart(@RequestBody EntityInputDto entityInputDto) {
+    public ResponseEntity saveEntityChart(@RequestBody List<EntityInputDto> entityInputDto) {
         return ResponseEntity.ok(entityService.createEntity(entityInputDto));
     }
-
-    @PutMapping("/{id}")
-    public ResponseEntity editEntity(@RequestBody EntityInputDto entityInputDto, @PathVariable(required = true) Integer id) {
-
-        return ResponseEntity.ok(entityService.updateEntity(entityInputDto, id));
-    }
+    
 }
