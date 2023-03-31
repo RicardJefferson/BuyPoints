@@ -35,6 +35,7 @@ public class ManagementEntityServiceImpl implements ManagementEntityService {
         return entityRepository.findBySport_Id(sportId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public TableOutputDTO getEntities(int sportId, int storeId,
                                       int periodId, int lineTypeId) {
@@ -89,6 +90,7 @@ public class ManagementEntityServiceImpl implements ManagementEntityService {
         return response;
     }
 
+    @Transactional
     @Override
     public TableOutputDTO createEntity(List<EntityInputDto> entityDTOList) {
 
@@ -102,7 +104,7 @@ public class ManagementEntityServiceImpl implements ManagementEntityService {
                     entityDTO.getEntityId(), entityDTO.getEntityTypeId());
 
             if (entityChartsOptional.isPresent())
-                deleteExistingEntityCharts(entityChartsOptional.get());
+                entityChartRepository.deleteAll(entityChartsOptional.get());
 
 
             entityChartRepository.saveAll(dtoConverter.convertToEntity(entityDTO));
@@ -112,15 +114,11 @@ public class ManagementEntityServiceImpl implements ManagementEntityService {
                 entityDTOList.get(0).getPeriodId(), entityDTOList.get(0).getLineTypeId());
     }
 
-    @Modifying
     @Transactional
-    public void deleteExistingEntityCharts(List<EntityChart> entityCharts) {
-        entityChartRepository.deleteAll(entityCharts);
-    }
-
     private void saveDefaultChart(EntityInputDto entityDTO) {
         if (entityDTO.getDefaultChartDTO() != null) {
-            Optional<DefaultStoreSportChart> defaultChartOptional = findDefaultChart(entityDTO.getDefaultChartDTO());
+            Optional<DefaultStoreSportChart> defaultChartOptional = defaultChartRepository.
+                    findBySportIdAndStoreId(entityDTO.getDefaultChartDTO().getSportId(), entityDTO.getDefaultChartDTO().getStoreId());
             if (defaultChartOptional.isPresent()) {
                 DefaultStoreSportChart defaultChart = defaultChartOptional.get();
                 if (defaultChart.getChartId() != entityDTO.getDefaultChartDTO().getChartId()) {
@@ -132,10 +130,6 @@ public class ManagementEntityServiceImpl implements ManagementEntityService {
                 defaultChartRepository.save(dtoConverter.convertToDefaultChartEntity(entityDTO.getDefaultChartDTO()));
             }
         }
-    }
-
-    private Optional<DefaultStoreSportChart> findDefaultChart(DefaultStoreSportChartDTO defaultChartDTO) {
-        return defaultChartRepository.findBySportIdAndStoreId(defaultChartDTO.getSportId(), defaultChartDTO.getStoreId());
     }
 
 }

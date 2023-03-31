@@ -24,6 +24,8 @@ public class MatchServiceImpl implements MatchService {
     private final MatchRepository matchRepository;
     private final ManagementEntityRepository entityRepository;
     private final DtoConverter dtoConverter;
+
+    @Transactional(readOnly = true)
     @Override
     public MatchTableDTO getMatch(int entityId, int matchId, int sportId, int storeId, int lineTypeId, int periodId) {
 
@@ -48,6 +50,7 @@ public class MatchServiceImpl implements MatchService {
                 .build();
     }
 
+    @Transactional
     @Override
     public MatchTableDTO createMatch(MatchOutputDTO matchOutputDTO) {
 

@@ -7,10 +7,12 @@ import com.symphony.BuyPoints.service.SportService;
 import com.symphony.BuyPoints.util.DtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
 import java.util.List;
 
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class SportServiceImpl implements SportService {

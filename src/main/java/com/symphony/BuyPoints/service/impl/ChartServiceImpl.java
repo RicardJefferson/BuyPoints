@@ -8,6 +8,7 @@ import com.symphony.BuyPoints.service.ChartService;
 import com.symphony.BuyPoints.util.DtoConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.webjars.NotFoundException;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class ChartServiceImpl implements ChartService {
 
     private final DtoConverter dtoConverter;
 
+    @Transactional(readOnly = true)
     @Override
     public ChartDTO getChart(int id) {
         Chart chart = chartRepository.findById(id)
@@ -27,6 +29,7 @@ public class ChartServiceImpl implements ChartService {
         return dtoConverter.convertToChartDto(chart);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ChartDTO> getAllActiveCharts() {
         List<Chart> charts = chartRepository.findByStatusTrue();
@@ -40,6 +43,7 @@ public class ChartServiceImpl implements ChartService {
         return dtoConverter.convertToChartDto(charts);*//*
     }*/
 
+    @Transactional
     @Override
     public Chart createChart(ChartDTO chartDTO) {
         chartRepository.findByName(chartDTO.getName())
@@ -51,6 +55,7 @@ public class ChartServiceImpl implements ChartService {
         return chartRepository.save(chart);
     }
 
+    @Transactional
     @Override
     public Chart updateChart(ChartDTO chartDTO, Integer id) {
         chartRepository.findById(id)
