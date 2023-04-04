@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -79,7 +81,7 @@ public class DtoConverter {
                 .build();
     }
 
-    private List<MarketDTO> convertToMarketDTO(List<Market> markets) {
+    private List<MarketDTO> convertToMarketDTO(Set<Market> markets) {
         return markets.stream()
                 .map(this::convertToMarketDTO)
                 .collect(Collectors.toList());
@@ -92,12 +94,23 @@ public class DtoConverter {
                 .build();
     }
 
-    public List<PeriodDTO> convertToPeriodDto(List<Period> sportPeriods) {
+    public List<PeriodDTO> convertToPeriodDto(Set<Period> sportPeriods) {
         return sportPeriods.stream()
                 .map(period -> modelMapper.map(period, PeriodDTO.class))
                 .collect(Collectors.toList());
 
     }
+
+   /* public Set<Period> convertToPeriodEntity(SportDTO sportDTO) {
+        return sportDTO.getSportPeriods().stream()
+                .map(periodDTO -> {
+                    Set<Sport> sports = new HashSet<>();
+                    Period p = modelMapper.map(periodDTO, Period.class);
+                    p.setSports(sportDTO.getId());
+                })
+                .collect(Collectors.toSet());
+
+    }*/
 
     public DefaultStoreSportChartDTO convertToDefaultChartDTO(DefaultStoreSportChart d) {
         return modelMapper.map(d, DefaultStoreSportChartDTO.class);
@@ -159,7 +172,7 @@ public class DtoConverter {
 
     public Match convertToMatchEntity(MatchOutputDTO matchOutputDTO, MatchDTO matchDTO) {
         return Match.builder()
-              /*  .managementEntity(m)*/
+                /*  .managementEntity(m)*/
                 .matchId(matchOutputDTO.getMatchId())
                 .storeId(matchOutputDTO.getStoreId())
                 .entityId(matchOutputDTO.getEntityId())

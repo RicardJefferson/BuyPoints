@@ -1,12 +1,10 @@
 package com.symphony.BuyPoints.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -17,13 +15,21 @@ public class Sport extends BaseEntity {
     @Column(name = "name", unique = true)
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade =
+                    {
+                            CascadeType.DETACH,
+                            CascadeType.MERGE,
+                            CascadeType.REFRESH,
+                            CascadeType.PERSIST
+                    },
+            targetEntity = Period.class)
     @JoinTable(
             name = "sport_period",
             joinColumns = @JoinColumn(name = "sport_id"),
             inverseJoinColumns = @JoinColumn(name = "period_id"))
     @OrderBy("id")
-    private List<Period> sportPeriods;
+    private Set<Period> sportPeriods;
 
     @ManyToMany
     @JoinTable(
@@ -31,6 +37,16 @@ public class Sport extends BaseEntity {
             joinColumns = @JoinColumn(name = "sport_id"),
             inverseJoinColumns = @JoinColumn(name = "market_id"))
     @OrderBy("id")
-    private List<Market> markets;
+    private Set<Market> markets;
+
+    /*public void removePeriod(Period period) {
+        this.sportPeriods.remove(period);
+        period.getSports().remove(this);
+    }
+
+    public void addPeriod(Period period) {
+        this.sportPeriods.add(period);
+        period.getSports().add(this);
+    }*/
 
 }

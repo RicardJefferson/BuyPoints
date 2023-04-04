@@ -4,7 +4,6 @@ import com.symphony.BuyPoints.dto.SportDTO;
 import com.symphony.BuyPoints.model.Sport;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface SportService {
 
@@ -13,5 +12,7 @@ public interface SportService {
     SportDTO getSport(int id);
 
     Sport getSportEntity(int id);
+
+    List<SportDTO> updateSportPeriods(SportDTO sportDTO);
 
 }

@@ -1,9 +1,11 @@
 package com.symphony.BuyPoints.repository;
 
-import com.symphony.BuyPoints.model.Chart;
 import com.symphony.BuyPoints.model.Sport;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,5 +17,8 @@ public interface SportRepository extends CrudRepository<Sport, Integer> {
 
     List<Sport> findAll();
 
-
+    @Transactional
+    @Modifying
+    @Query(value = "DELETE FROM sport_period sp WHERE sp.sport_id = ?", nativeQuery = true)
+    Object removeSportPeriodsRelations(int id);
 }

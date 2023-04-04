@@ -1,6 +1,5 @@
 package com.symphony.BuyPoints.dto;
 
-import com.symphony.BuyPoints.model.Period;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

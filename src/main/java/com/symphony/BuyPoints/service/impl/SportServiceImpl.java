@@ -1,8 +1,11 @@
 package com.symphony.BuyPoints.service.impl;
 
+import com.symphony.BuyPoints.dto.PeriodDTO;
 import com.symphony.BuyPoints.dto.SportDTO;
+import com.symphony.BuyPoints.model.Period;
 import com.symphony.BuyPoints.model.Sport;
 import com.symphony.BuyPoints.repository.SportRepository;
+import com.symphony.BuyPoints.service.PeriodService;
 import com.symphony.BuyPoints.service.SportService;
 import com.symphony.BuyPoints.util.DtoConverter;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +21,8 @@ import java.util.List;
 public class SportServiceImpl implements SportService {
 
     private final SportRepository sportRepository;
+
+    private final PeriodService periodService;
     private final DtoConverter dtoConverter;
 
     @Override
@@ -36,6 +41,33 @@ public class SportServiceImpl implements SportService {
         Sport sport = sportRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Sport not found by given id " + id));
         return sport;
+    }
+
+    @Transactional
+    @Override
+    public List<SportDTO> updateSportPeriods(SportDTO sportDTO) {
+        Sport sport = getSportEntity(sportDTO.getId());
+
+        sportRepository.removeSportPeriodsRelations(sportDTO.getId());
+
+        sport.getSportPeriods().clear();
+        for (PeriodDTO periodDTO : sportDTO.getSportPeriods()) {
+            Period existingPeriod = periodService.findById(periodDTO.getId()).orElse(null);
+            if (existingPeriod != null) {
+                sport.getSportPeriods().add(existingPeriod);
+            }
+        }
+        //Set<Period> periodSet = new HashSet<>();
+        //sport.setPeriods(dtoConverter.convertToPeriodEntity(sportDTO));
+     /*   for (PeriodDTO p : sportDTO.getSportPeriods()) {
+            p.removeSport(sport);
+            periodSet.add(p);
+        }*/
+        sportRepository.save(sport);
+
+        return getAllSports();
+
+
     }
 
 }
