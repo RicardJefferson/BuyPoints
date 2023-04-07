@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class SportDTO {
-    private int id;
+    private Long id;
     private String name;
     private List<PeriodDTO> sportPeriods;
     private List<MarketDTO> marketDTOs;

@@ -27,7 +27,7 @@ public class MatchServiceImpl implements MatchService {
 
     @Transactional(readOnly = true)
     @Override
-    public MatchTableDTO getMatch(int entityId, int matchId, int sportId, int storeId, int lineTypeId, int periodId) {
+    public MatchTableDTO getMatch(long entityId, long matchId, long sportId, long storeId, long lineTypeId, long periodId) {
 
         List<MatchDTO> matchDTOList = new ArrayList<>();
         Optional<List<Match>> matchesOptional =

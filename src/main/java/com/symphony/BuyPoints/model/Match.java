@@ -16,25 +16,25 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Match extends BaseEntity {
     @Column(name = "match_id")
-    private Integer matchId;
+    private Long matchId;
     @Column(name = "entity_id")
-    private Integer entityId;
+    private Long entityId;
     @Column(name = "entity_type_id")
     private Integer entityTypeId;
     @Column(name = "store_id")
-    private Integer storeId;
+    private Long storeId;
     @Column(name = "sport_id")
-    private Integer sportId;
+    private Long sportId;
     @Column(name = "period_id")
-    private Integer periodId;
+    private Long periodId;
     @Column(name = "line_type_id")
-    private Integer lineTypeId;
+    private Long lineTypeId;
     @Column(name = "market_id")
-    private Integer marketId;
+    private Long marketId;
     @Column(name = "market_name")
     private String marketName;
     @Column(name = "chart_id")
-    private Integer chartId;
+    private Long chartId;
     @Column(name = "chart_name")
     private String chartName;
 

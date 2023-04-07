@@ -1,8 +1,6 @@
 package com.symphony.BuyPoints.controler;
 
-import com.symphony.BuyPoints.dto.ChartDTO;
 import com.symphony.BuyPoints.model.Store;
-import com.symphony.BuyPoints.service.ChartService;
 import com.symphony.BuyPoints.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

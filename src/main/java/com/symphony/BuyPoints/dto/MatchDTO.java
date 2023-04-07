@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MatchDTO {
 
-    private Integer id;
-    private Integer matchChartId;
-    private Integer marketId;
+    private Long id;
+    private Long matchChartId;
+    private Long marketId;
     private String marketName;
-    private Integer chartId;
+    private Long chartId;
     private String chartName;
 
     /* private List<MatchDTO> matchDTO;

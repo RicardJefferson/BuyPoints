@@ -13,14 +13,14 @@ import java.util.List;
 @Data
 public class MatchOutputDTO {
 
-    private Integer id;
-    private Integer storeId;
-    private Integer entityId;
+    private Long id;
+    private Long storeId;
+    private Long entityId;
     private Integer entityTypeId;
-    private Integer sportId;
-    private Integer lineTypeId;
-    private Integer periodId;
-    private Integer matchId;
+    private Long sportId;
+    private Long lineTypeId;
+    private Long periodId;
+    private Long matchId;
     private List<MatchDTO> matchDTOList;
 
 

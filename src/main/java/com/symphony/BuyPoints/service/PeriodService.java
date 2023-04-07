@@ -13,7 +13,7 @@ public interface PeriodService {
 
     void removeAll(Set<Period> periods);
 
-    Optional<Period> findById(int id);
+    Optional<Period> findById(long id);
 
     void saveAll(Set<Period> periodSet);
 

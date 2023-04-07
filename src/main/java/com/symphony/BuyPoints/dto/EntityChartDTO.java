@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EntityChartDTO {
 
-    private Integer marketId;
+    private Long marketId;
     private String marketName;
-    private Integer chartId;
+    private Long chartId;
     private String chartName;
 
 }

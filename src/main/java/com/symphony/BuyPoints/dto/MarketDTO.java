@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MarketDTO {
 
-    private Integer id;
+    private Long id;
     private String displayName;
 
 }

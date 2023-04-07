@@ -11,22 +11,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MatchRepository extends CrudRepository<Match, Integer> {
+public interface MatchRepository extends CrudRepository<Match, Long> {
 
     Optional<List<Match>> findByMatchIdAndSportIdAndStoreIdAndLineTypeIdAndPeriodId(
-            @Param("matchId") Integer matchId,
-            @Param("sportId") Integer sportId,
-            @Param("storeId") Integer storeId,
-            @Param("lineTypeId") Integer lineTypeId,
-            @Param("periodId") Integer periodId);
+            @Param("matchId") Long matchId,
+            @Param("sportId") Long sportId,
+            @Param("storeId") Long storeId,
+            @Param("lineTypeId") Long lineTypeId,
+            @Param("periodId") Long periodId);
 
     @Query("delete from Match m where m.matchId = :matchId and m.sportId = :sportId " +
             "and m.storeId = :storeId and m.lineTypeId = :lineTypeId and m.periodId = :periodId ")
     List<Match> deleteExisting(
-            @Param("matchId") Integer matchId,
-            @Param("sportId") Integer sportId,
-            @Param("storeId") Integer storeId,
-            @Param("lineTypeId") Integer lineTypeId,
-            @Param("periodId") Integer periodId);
+            @Param("matchId") Long matchId,
+            @Param("sportId") Long sportId,
+            @Param("storeId") Long storeId,
+            @Param("lineTypeId") Long lineTypeId,
+            @Param("periodId") Long periodId);
 
 }

@@ -34,7 +34,7 @@ public class PeriodServiceImpl implements PeriodService {
     }
 
     @Override
-    public Optional<Period> findById(int id) {
+    public Optional<Period> findById(long id) {
         return periodRepository.findById(id);
     }
 

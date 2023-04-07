@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class EntityDTO {
-    private Integer marketId;
+    private Long marketId;
     private String marketName;
-    private Integer chartId;
+    private Long chartId;
     private String chartName;
 
 }

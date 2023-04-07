@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ChartDTO {
 
-    private int id;
+    private Long id;
 
     List<ChartItemDTO> items;
 
@@ -25,7 +25,7 @@ public class ChartDTO {
 
     private String user;
 
-    public ChartDTO(int id, List<ChartItemDTO> items, List<ChartPointsRatioDTO> chartPointsRatio, String name, double endingPoint) {
+    public ChartDTO(long id, List<ChartItemDTO> items, List<ChartPointsRatioDTO> chartPointsRatio, String name, double endingPoint) {
         this.id = id;
         this.items = items;
         this.chartPointsRatio = chartPointsRatio;

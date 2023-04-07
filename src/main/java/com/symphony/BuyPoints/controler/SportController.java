@@ -19,7 +19,7 @@ public class SportController {
     private final SportService sportService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<SportDTO> getSportById(@PathVariable(value = "id", required = true) Integer id) {
+    public ResponseEntity<SportDTO> getSportById(@PathVariable(value = "id") Long id) {
         return ResponseEntity.ok(sportService.getSport(id));
     }
 

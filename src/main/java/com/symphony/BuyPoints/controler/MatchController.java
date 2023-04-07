@@ -16,12 +16,12 @@ public class MatchController {
 
     @GetMapping
     public ResponseEntity<MatchTableDTO> getMatches(
-            @RequestParam(required = true) int entityId,
-            @RequestParam(required = true) int matchId,
-            @RequestParam(required = true) int sportId,
-            @RequestParam(required = true) int storeId,
-            @RequestParam(required = true) int lineTypeId,
-            @RequestParam(required = true) int periodId) {
+            @RequestParam long entityId,
+            @RequestParam long matchId,
+            @RequestParam long sportId,
+            @RequestParam long storeId,
+            @RequestParam long lineTypeId,
+            @RequestParam long periodId) {
 
         return ResponseEntity.ok(matchService.getMatch(entityId, matchId, sportId,
                 storeId, periodId, lineTypeId));

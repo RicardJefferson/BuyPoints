@@ -15,7 +15,7 @@ import java.util.List;
 public class ManagementEntity extends BaseEntity {
 
     @Column(name = "entity_id", unique = true)
-    private Integer entityId;
+    private Long entityId;
     @Column(name = "entity_type_id")
     private Integer entityTypeId;
 

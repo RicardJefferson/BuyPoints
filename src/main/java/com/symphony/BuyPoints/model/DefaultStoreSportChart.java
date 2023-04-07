@@ -16,13 +16,13 @@ import lombok.NoArgsConstructor;
 @Entity
 public class DefaultStoreSportChart extends BaseEntity {
     @Column(name = "store_id")
-    private Integer storeId;
+    private Long storeId;
 
     @Column(name = "sport_id")
-    private Integer sportId;
+    private Long sportId;
 
     @Column(name = "chart_id")
-    private Integer chartId;
+    private Long chartId;
 
     @Column(name = "chart_name")
     private String chartName;

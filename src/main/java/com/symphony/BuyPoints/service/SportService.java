@@ -9,9 +9,9 @@ public interface SportService {
 
     List<SportDTO> getAllSports();
 
-    SportDTO getSport(int id);
+    SportDTO getSport(long id);
 
-    Sport getSportEntity(int id);
+    Sport getSportEntity(long id);
 
     List<SportDTO> updateSportPeriods(SportDTO sportDTO);
 

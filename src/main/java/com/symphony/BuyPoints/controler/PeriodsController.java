@@ -17,9 +17,7 @@ import java.util.Set;
 public class PeriodsController {
 
     private final PeriodService periodService;
-
     private final SportService sportService;
-
 
     @GetMapping
     public ResponseEntity<List<PeriodDTO>> getPeriods() {

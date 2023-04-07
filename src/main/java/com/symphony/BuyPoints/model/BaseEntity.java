@@ -10,6 +10,6 @@ public class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    Long id;
 
 }

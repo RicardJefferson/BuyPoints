@@ -23,7 +23,7 @@ public class ChartServiceImpl implements ChartService {
 
     @Transactional(readOnly = true)
     @Override
-    public ChartDTO getChart(int id) {
+    public ChartDTO getChart(long id) {
         Chart chart = chartRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Chart with given id is not found"));
         return dtoConverter.convertToChartDto(chart);
@@ -57,7 +57,7 @@ public class ChartServiceImpl implements ChartService {
 
     @Transactional
     @Override
-    public Chart updateChart(ChartDTO chartDTO, Integer id) {
+    public Chart updateChart(ChartDTO chartDTO, Long id) {
         chartRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Chart with given id is not found"));
 

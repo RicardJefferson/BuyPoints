@@ -13,13 +13,13 @@ public class EntityInputDto {
 
     private DefaultStoreSportChartDTO defaultChartDTO;
 
-    private Integer id;
-    private Integer storeId;
-    private Integer entityId;
+    private Long id;
+    private Long storeId;
+    private Long entityId;
     private Integer entityTypeId;
-    private Integer sportId;
-    private Integer lineTypeId;
-    private Integer periodId;
+    private Long sportId;
+    private Long lineTypeId;
+    private Long periodId;
     private List<EntityDTO> entityDTOs;
 
 }

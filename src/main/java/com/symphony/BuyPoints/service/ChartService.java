@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ChartService {
 
-    ChartDTO getChart(int id);
+    ChartDTO getChart(long id);
 
     List<ChartDTO> getAllActiveCharts();
 
@@ -15,7 +15,7 @@ public interface ChartService {
 
     Chart createChart(ChartDTO chartDTO);
 
-    Chart updateChart(ChartDTO chartDTO, Integer id);
+    Chart updateChart(ChartDTO chartDTO, Long id);
 
 
 }

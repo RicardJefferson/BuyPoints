@@ -12,8 +12,8 @@ public interface MatchService {
 
     /*List<MatchDTO> getMatchesByRotatingNumber(int matchId);*/
 
-    MatchTableDTO getMatch(int entityId, int match_id, int sportId,
-                           int storeId, int lineTypeId, int periodId);
+    MatchTableDTO getMatch(long entityId, long match_id, long sportId,
+                           long storeId, long lineTypeId, long periodId);
 
     public MatchTableDTO createMatch(MatchOutputDTO matchOutputDTO);
 }

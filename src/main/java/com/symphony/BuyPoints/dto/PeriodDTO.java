@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PeriodDTO {
 
-    private Integer id;
+    private Long id;
     private String periodName;
 
 

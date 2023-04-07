@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ChartRepository extends CrudRepository<Chart, Integer> {
+public interface ChartRepository extends CrudRepository<Chart, Long> {
 
     List<Chart> findAll();
     List<Chart> findByStatusTrue();
 
     Optional<Chart> findByName(String name);
-    Optional<Chart> findById(int id);
+    Optional<Chart> findById(long id);
 
     Chart save(Chart chart);
 

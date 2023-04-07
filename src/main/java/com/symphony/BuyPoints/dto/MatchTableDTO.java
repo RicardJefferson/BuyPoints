@@ -14,8 +14,8 @@ import java.util.List;
 @Builder
 public class MatchTableDTO {
 
-    private Integer id;
-    private Integer entityId;
+    private Long id;
+    private Long entityId;
     private Integer entityTypeId;
     @JsonProperty("League/Tournament")
     private String displayName;

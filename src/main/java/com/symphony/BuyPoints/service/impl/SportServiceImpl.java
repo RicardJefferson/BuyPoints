@@ -31,13 +31,13 @@ public class SportServiceImpl implements SportService {
     }
 
     @Override
-    public SportDTO getSport(int id) {
+    public SportDTO getSport(long id) {
         Sport sport = getSportEntity(id);
         return dtoConverter.convertToSportDTO(sport);
     }
 
     @Override
-    public Sport getSportEntity(int id) {
+    public Sport getSportEntity(long id) {
         Sport sport = sportRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Sport not found by given id " + id));
         return sport;

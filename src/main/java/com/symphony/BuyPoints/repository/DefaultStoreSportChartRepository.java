@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface DefaultStoreSportChartRepository extends CrudRepository<DefaultStoreSportChart, Integer> {
+public interface DefaultStoreSportChartRepository extends CrudRepository<DefaultStoreSportChart, Long> {
 
-    Optional<DefaultStoreSportChart> findBySportIdAndStoreId(int sportId, int storeId);
+    Optional<DefaultStoreSportChart> findBySportIdAndStoreId(long sportId, long storeId);
 
     DefaultStoreSportChart save(DefaultStoreSportChart defaultStoreSportChart);
 

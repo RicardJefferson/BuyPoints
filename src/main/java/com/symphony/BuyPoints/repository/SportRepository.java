@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SportRepository extends CrudRepository<Sport, Integer> {
+public interface SportRepository extends CrudRepository<Sport, Long> {
 
-    Optional<Sport> findById(int id);
+    Optional<Sport> findById(long id);
 
     List<Sport> findAll();
 
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM sport_period sp WHERE sp.sport_id = ?", nativeQuery = true)
-    Object removeSportPeriodsRelations(int id);
+    Object removeSportPeriodsRelations(long id);
 }

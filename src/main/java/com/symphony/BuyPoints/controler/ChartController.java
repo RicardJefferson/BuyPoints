@@ -16,7 +16,7 @@ public class ChartController {
     private final ChartService chartService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ChartDTO> getChartById(@PathVariable(value = "id", required = true) Integer id) {
+    public ResponseEntity<ChartDTO> getChartById(@PathVariable(value = "id", required = true) Long id) {
         return ResponseEntity.ok(chartService.getChart(id));
     }
 
@@ -31,7 +31,7 @@ public class ChartController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity editChart(@RequestBody ChartDTO chartDTO, @PathVariable(required = true) Integer id) {
+    public ResponseEntity editChart(@RequestBody ChartDTO chartDTO, @PathVariable(required = true) Long id) {
 
         return ResponseEntity.ok(chartService.updateChart(chartDTO, id));
     }
